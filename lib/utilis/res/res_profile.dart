@@ -21,6 +21,7 @@ class ResSignUpScreen {
   ResSignUpScreen._();
 
   static String welcome = "Sign Up";
+  static String register = "Register with us today!";
   static String fullName = "Full Name";
   static String email = "Email";
   static String password = "Password";
