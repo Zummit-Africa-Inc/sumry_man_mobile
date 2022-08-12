@@ -28,7 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ResSignUpScreen.welcome,
                   style: sSignUpTextStyle,
                 ),
-                vSpace(space),
+                // vSpace(space),
                 Text(
                   ResSignUpScreen.register,
                   style: sSignUpTextStyle.copyWith(
