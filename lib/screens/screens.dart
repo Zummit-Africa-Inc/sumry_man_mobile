@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../components/copyright.dart';
-import '../utilis/designs/routes.dart';
+import '../utils/designs/routes.dart';
 
 /// Should only be used for debugging
 class Screens extends StatelessWidget {

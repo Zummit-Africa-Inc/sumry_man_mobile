@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../components/copyright.dart';
 import '../components/spacers.dart';
-import '../utilis/designs/assets.dart';
-import '../utilis/designs/dimens.dart';
-import '../utilis/designs/routes.dart';
-import '../utilis/res/res_profile.dart';
+import '../utils/designs/assets.dart';
+import '../utils/designs/dimens.dart';
+import '../utils/designs/routes.dart';
+import '../utils/res/res_profile.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
