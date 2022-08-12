@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sumry_app/screens/splash_screen.dart';
-import 'package:sumry_app/utilis/designs/colors.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'utilis/designs/colors.dart';
+import 'utilis/designs/routes.dart';
 
 void main() {
   runApp(const SumryMan());
@@ -13,11 +15,13 @@ class SumryMan extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: kPrimaryColor,
+      theme: ThemeData.light().copyWith(
+        colorScheme: const ColorScheme.light(
+          primary: kPrimaryColor,
+        ),
+        textTheme: GoogleFonts.poppinsTextTheme(),
       ),
-      home: const SplashScreen(),
+      routes: Routes.routes,
     );
   }
 }

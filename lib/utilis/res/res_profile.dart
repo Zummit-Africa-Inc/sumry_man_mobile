@@ -1,6 +1,7 @@
 class ResWelcomePage {
   ResWelcomePage._();
   static String sumry = "SumryMan";
+  static String zummit = "ZumitAfrica Inc.";
 }
 
 class ResLogInScreen {
@@ -24,7 +25,7 @@ class ResSignUpScreen {
   static String fullName = "Full Name";
   static String email = "Email";
   static String password = "Password";
-  static String conrimPassword = "Confirm Password";
+  static String confirmPassword = "Confirm Password";
   static String signUp = "Sign Up";
   static String alreadyHaveAnAccount = "Already have an account?";
   static String login = "Login";
