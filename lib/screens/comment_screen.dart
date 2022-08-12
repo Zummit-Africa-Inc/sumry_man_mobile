@@ -53,7 +53,7 @@ class CommentScreen extends StatelessWidget {
                 ),
                 vSpace(sPadding),
                 InputField(
-                  label: ResCommentScreen.leaveComment,
+                  label: ResCommentScreen.commentHere,
                   maxLines: 5,
                 ),
                 vSpace(sPadding),

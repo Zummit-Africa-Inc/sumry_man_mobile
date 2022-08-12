@@ -45,6 +45,6 @@ class ResCommentScreen {
   static String leaveUsAComment = "Leave us a comment";
   static String fullName = "Full Name";
   static String emailAddress = "Email Address";
-  static String commentsHere = "Comments here...";
+  static String commentHere = "Comment here...";
   static String leaveComment = "Leave Comment";
 }
