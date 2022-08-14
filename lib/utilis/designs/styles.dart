@@ -13,4 +13,29 @@ final sButtonTextStyle = GoogleFonts.inter(
     fontSize: 16,
     color: kPrimaryColor,
   ),
+
+);final sOnboardingButtonTextStyle = GoogleFonts.inter(
+  textStyle: const TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    color: kPrimaryColor,
+  ),
+
+);
+
+final sOnboarding1MainTextStyle = GoogleFonts.poppins(
+  textStyle: const TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 30,
+    color: kPrimaryColor,
+  ),
+
+);
+final sOnboarding1subTextStyle = GoogleFonts.inter(
+  textStyle: const TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    color: kPrimaryColor,
+  ),
+
 );

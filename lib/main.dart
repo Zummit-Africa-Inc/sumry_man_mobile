@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sumry_app/screens/onboarding_screen1.dart';
 import 'package:sumry_app/screens/splash_screen.dart';
 import 'package:sumry_app/utilis/designs/colors.dart';
 
