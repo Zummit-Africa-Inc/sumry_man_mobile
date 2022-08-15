@@ -6,12 +6,14 @@ class InputField extends StatelessWidget {
   final TextEditingController? controller;
   final String label;
   final int? maxLines;
+  final bool expands;
 
   const InputField({
     Key? key,
     this.controller,
     required this.label,
     this.maxLines,
+    this.expands = false,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,7 @@ class InputField extends StatelessWidget {
 
     return TextFormField(
       controller: controller,
+      expands: expands,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide(

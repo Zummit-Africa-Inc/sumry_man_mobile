@@ -1,7 +1,7 @@
 class ResWelcomePage {
   ResWelcomePage._();
   static String sumry = "SumryMan";
-  static String zummit = "ZumitAfrica Inc.";
+  static String zummit = "ZummitAfrica Inc.";
 }
 
 class ResLogInScreen {

@@ -18,7 +18,7 @@ class Copyright extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(sPadding / 2),
         child: Text(
-          '@${DateTime.now().year} ${ResWelcomePage.zummit}',
+          '\u00a9${DateTime.now().year} ${ResWelcomePage.zummit}',
           style: theme.textTheme.bodyText2?.copyWith(
             color: color ?? theme.colorScheme.primary,
           ),

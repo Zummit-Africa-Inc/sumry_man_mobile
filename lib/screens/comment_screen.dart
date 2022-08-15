@@ -9,7 +9,6 @@ import '../components/input_field.dart';
 import '../components/spacers.dart';
 import '../utils/designs/dimens.dart';
 import '../utils/res/res_profile.dart';
-import '../utils/extensions.dart';
 
 class CommentScreen extends StatelessWidget {
   const CommentScreen({Key? key}) : super(key: key);
@@ -40,30 +39,28 @@ class CommentScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ListView(
-              shrinkWrap: true,
-              children: [
-                vSpace(sPadding + sPadding / 2),
-                InputField(
-                  label: ResCommentScreen.fullName,
-                ),
-                vSpace(sPadding),
-                InputField(
-                  label: ResCommentScreen.emailAddress,
-                ),
-                vSpace(sPadding),
-                InputField(
-                  label: ResCommentScreen.commentHere,
-                  maxLines: 5,
-                ),
-                vSpace(sPadding),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: AppButton(
-                    text: ResCommentScreen.leaveComment,
-                  ),
-                ),
-              ],
+            vSpace(sPadding + sPadding / 2),
+            InputField(
+              label: ResCommentScreen.fullName,
+            ),
+            vSpace(sPadding),
+            InputField(
+              label: ResCommentScreen.emailAddress,
+            ),
+            vSpace(sPadding),
+            Expanded(
+              flex: 2,
+              child: InputField(
+                label: ResCommentScreen.commentHere,
+                expands: true,
+              ),
+            ),
+            vSpace(sPadding),
+            Align(
+              alignment: Alignment.centerRight,
+              child: AppButton(
+                text: ResCommentScreen.leaveComment,
+              ),
             ),
             const Spacer(),
             const Copyright(),
