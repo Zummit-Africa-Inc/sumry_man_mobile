@@ -22,6 +22,7 @@ class CommentScreen extends StatelessWidget {
       appBar: const DefaultAppBar(
         trailing: UserImage(null),
       ),
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(sPadding, sPadding, sPadding, 0),
         child: Column(
