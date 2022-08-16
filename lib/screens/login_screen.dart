@@ -20,6 +20,8 @@ class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool isPasswordVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -74,9 +76,18 @@ class _SignInScreenState extends State<SignInScreen> {
               TextFormField(
                 controller: passwordController,
                 cursorColor: Colors.black,
-                obscureText: true,
+                obscureText: isPasswordVisible,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    color: kPrimaryColor,
+                    icon: isPasswordVisible
+                        ? Icon(Icons.visibility_off)
+                        : Icon(Icons.visibility),
+                    onPressed: () => setState(() {
+                      isPasswordVisible = !isPasswordVisible;
+                    }),
+                  ),
                   hintText: ResSignUpScreen.password,
                   hintStyle: sHintTextStyle,
                   contentPadding:

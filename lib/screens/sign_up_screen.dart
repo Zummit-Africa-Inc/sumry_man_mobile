@@ -17,6 +17,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final double space = 18;
 
+   bool isPasswordVisible = true;
+
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -99,9 +101,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextFormField(
                 controller: passwordController,
                 cursorColor: Colors.black,
-                obscureText: true,
+                obscureText: isPasswordVisible,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    color: kPrimaryColor,
+                    icon: isPasswordVisible
+                    ? Icon(Icons.visibility_off)
+                    : Icon(Icons.visibility),
+                    onPressed: () => setState(() {
+                      isPasswordVisible = !isPasswordVisible;
+                    }),
+                  ),
                   hintText: ResSignUpScreen.password,
                   hintStyle: sHintTextStyle,
                   contentPadding:
