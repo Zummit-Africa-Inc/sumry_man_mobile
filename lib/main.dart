@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sumry_app/models/pages.dart';
+import 'package:sumry_app/screens/login_screen.dart';
 import 'package:sumry_app/screens/sign_up_screen.dart';
 import 'package:sumry_app/screens/splash_screen.dart';
 import 'package:sumry_app/utilis/designs/colors.dart';
@@ -15,7 +17,12 @@ class SumryMan extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
-      home: const SignUpScreen(),
+      // home: const SignUpScreen(),
+      initialRoute: SumryManApp.signUpPath,
+      routes: {
+        SumryManApp.signUpPath: (context) => const SignUpScreen(),
+        SumryManApp.signInPath: (context) => const SignInScreen(),
+      },
     );
   }
 }

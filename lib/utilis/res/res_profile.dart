@@ -14,7 +14,7 @@ class ResLogInScreen {
   static String login = "Login";
   static String dontHaveAnAccount = "Don't have an account?";
   static String signUp = "Sign Up";
-  static String oR = "or";
+  static String oR = "Or";
 }
 
 class ResSignUpScreen {
@@ -29,11 +29,18 @@ class ResSignUpScreen {
   static String signUp = "Sign Up";
   static String alreadyHaveAnAccount = "Already have an account?";
   static String login = "Login";
-  static String oR = "or";
+  static String oR = "Or";
 }
 
-class ResSocial {
-  ResSocial._();
+class ResSocialSignUp {
+  ResSocialSignUp._();
+
+  static String signUpWithGoogle = "Sign Up With Google";
+  static String signUpWithFaceBook = "Sign Up With Facebook";
+}
+
+class ResSocialLogIn {
+  ResSocialLogIn._();
 
   static String continueWithGoogle = "Continue with Google";
   static String continueWithFacebook = "Continue with Facebook";

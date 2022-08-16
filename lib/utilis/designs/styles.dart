@@ -10,12 +10,22 @@ final sPrimaryTextStyle = GoogleFonts.poppins(
   ),
 );
 
+final sHintTextStyle = GoogleFonts.poppins(
+  textStyle: const TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    color: kTextColor,
+  ),
+);
+
+
 final sSignUpTextStyle = GoogleFonts.poppins(
-    textStyle: const TextStyle(
-  fontWeight: FontWeight.w600,
-  fontSize: 26,
-  color: kPrimaryColor,
-));
+  textStyle: const TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 26,
+    color: kPrimaryColor,
+  ),
+);
 
 final sButtonTextStyle = GoogleFonts.inter(
   textStyle: const TextStyle(
