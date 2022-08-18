@@ -62,20 +62,4 @@ class OnboardingScreen2 extends StatelessWidget {
     );
   }
 }
-// decoration: BoxDecoration(
-// image: DecorationImage(image: AssetImage("assets/images/upload_img.png"),
-// fit: BoxFit.contain),
-// ),
-// padding: ,
-// child: Column(
-// children: [
-// Text(
-// ResOnboardingScreen2.title,
-// style: sOnBoarding2BigText,
-// ),
-// Text(
-// ResOnboardingScreen2.body,
-// style: sOnBoarding2SmallText,
-// )
-// ],
-// ),
+
