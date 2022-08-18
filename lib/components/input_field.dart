@@ -7,13 +7,17 @@ class InputField extends StatelessWidget {
   final String label;
   final int? maxLines;
   final bool expands;
+  final IconData? icon;
+  final bool readOnly;
 
   const InputField({
     Key? key,
     this.controller,
     required this.label,
     this.maxLines,
+    this.icon,
     this.expands = false,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -23,6 +27,7 @@ class InputField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       expands: expands,
+      readOnly: readOnly,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide(
@@ -35,6 +40,7 @@ class InputField extends StatelessWidget {
             color: kInputHintColor,
           ),
         ),
+        suffixIcon: icon != null ? Icon(icon) : null,
       ),
       maxLines: maxLines,
     );

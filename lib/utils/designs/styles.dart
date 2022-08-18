@@ -1,5 +1,6 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'colors.dart';
 
 final sPrimaryTextStyle = GoogleFonts.poppins(
@@ -25,10 +26,4 @@ final sButtonTextStyle = GoogleFonts.inter(
     color: kPrimaryColor,
   ),
 );
-<<<<<<< HEAD:lib/utilis/designs/styles.dart
-
-
-=======
->>>>>>> 33fd79a3652a0338f097e202334a5bda5fac881c:lib/utils/designs/styles.dart
-
 

@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sumry_app/utilis/res/res_profile.dart';
-import 'package:sumry_app/utilis/designs/styles.dart';
 
-import '../utilis/designs/assets.dart';
+import '../utils/designs/assets.dart';
+import '../utils/designs/styles.dart';
+import '../utils/res/res_profile.dart';
 
 class OnboardingScreen2 extends StatelessWidget {
   const OnboardingScreen2({Key? key}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +25,7 @@ class OnboardingScreen2 extends StatelessWidget {
                   Text(
                     ResOnboardingScreen2.title,
                     style: sOnBoarding2BigText,
-                      ),
+                  ),
                   Text(
                     ResOnboardingScreen2.body,
                     style: sOnBoarding2SmallText,
@@ -42,9 +39,11 @@ class OnboardingScreen2 extends StatelessWidget {
                     ResOnboardingScreen2.getStarted,
                     style: sButtonTextStyle,
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       print('button clicked');
                     },
                     child: Image(

@@ -61,6 +61,7 @@ class CommentScreen extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: AppButton(
                 text: ResCommentScreen.leaveComment,
+                backgroundColor: theme.colorScheme.primary,
               ),
             ),
             const Spacer(),

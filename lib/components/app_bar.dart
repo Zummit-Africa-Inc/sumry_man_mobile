@@ -40,8 +40,13 @@ class DefaultAppBar extends StatelessWidget with PreferredSizeWidget {
           : null,
       actions: trailing != null
           ? [
-              trailing!,
-              hSpace(sPadding),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  trailing!,
+                  hSpace(sPadding),
+                ],
+              )
             ]
           : null,
       backgroundColor: Colors.transparent,
