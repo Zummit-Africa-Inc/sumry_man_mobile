@@ -37,3 +37,11 @@ class ResSocial {
   static String continueWithGoogle = "Continue with Google";
   static String continueWithFacebook = "Continue with Facebook";
 }
+
+class ResOnboardingScreen2 {
+  ResOnboardingScreen2._();
+
+  static String title = "Summarize msdocs, .text files ";
+  static String body = "Support for file upload(support msdocs, text files(.text) and docx files).";
+  static String getStarted = "Get Started";
+}

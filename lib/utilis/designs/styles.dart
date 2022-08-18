@@ -7,10 +7,23 @@ final sPrimaryTextStyle = GoogleFonts.poppins(
       fontWeight: FontWeight.w500, fontSize: 31, color: Colors.white),
 );
 
+final sOnBoarding2BigText = GoogleFonts.poppins(
+  textStyle: const TextStyle(
+      fontWeight: FontWeight.w600, fontSize: 31, color: kPrimaryColor),
+);
+
+final sOnBoarding2SmallText = GoogleFonts.poppins(
+  textStyle: const TextStyle(
+    fontWeight: FontWeight.w400, fontSize: 16, color: kTextColor
+  )
+);
+
 final sButtonTextStyle = GoogleFonts.inter(
   textStyle: const TextStyle(
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 16,
     color: kPrimaryColor,
   ),
 );
+
+

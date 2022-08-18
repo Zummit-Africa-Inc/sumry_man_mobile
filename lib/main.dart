@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sumry_app/screens/onboarding_screen2.dart';
 import 'package:sumry_app/screens/splash_screen.dart';
 import 'package:sumry_app/utilis/designs/colors.dart';
 
@@ -17,7 +18,7 @@ class SumryMan extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: kPrimaryColor,
       ),
-      home: const SplashScreen(),
+      home: const OnboardingScreen2(),
     );
   }
 }
