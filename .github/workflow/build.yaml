@@ -1,0 +1,59 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+    - run: flutter pub get
+    - run: flutter test
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+    - run: flutter pub get
+    - run: flutter build apk
+    - uses: actions/upload-artifact@v1
+      with:
+        name: release-apk
+        path: build/app/outputs/apk/release/app-release.apk
+    
+    # Will be used to build and deploy to netlify when we are ready to deploy to web
+    # web:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #   - uses: actions/checkout@v2
+    #   - uses: subosito/flutter-action@v2
+    #     with:
+    #       channel: stable
+    #   - run: flutter config --enable-web
+    #   - run: flutter build web --release
+
+      # - name: Deploy to Netlify
+      #   uses: nwtgck/actions-netlify@v1.1
+      #   with:
+      #     publish-dir: './build/web'
+      #     production-branch: main
+      #     github-token: ${{ secrets.MY_GITHUB_TOKEN }}
+      #     deploy-message: "Deploy from GitHub Actions"
+      #     enable-pull-request-comment: false
+      #     enable-commit-comment: true
+      #     overwrites-pull-request-comment: true
+      #   env:
+      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      #   timeout-minutes: 1
