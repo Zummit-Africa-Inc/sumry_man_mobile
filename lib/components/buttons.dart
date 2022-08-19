@@ -24,7 +24,7 @@ class AppButton extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       padding: padding ?? const EdgeInsets.all(8),
-      color: backgroundColor ?? kButtonColor,
+      color: backgroundColor ?? theme.colorScheme.secondary,
       child: InkWell(
         onTap: onPressed,
         child: Text(

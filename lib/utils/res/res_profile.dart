@@ -65,13 +65,17 @@ class ResCommentScreen {
   static String leaveComment = "Leave Comment";
 }
 
-class ResOnboardingScreen2 {
-  ResOnboardingScreen2._();
+class ResOnboardingScreen {
+  ResOnboardingScreen._();
 
-  static String title = "Summarize msdocs, .text files ";
-  static String body =
+  static const String title1 = "Summarize Urls and Texts";
+  static const String title2 = "Summarize msdocs, .text files ";
+  static const String body1 =
+      "Support for input from different sources(eg. url(website), text input)";
+  static const String body2 =
       "Support for file upload(support msdocs, text files(.text) and docx files).";
-  static String getStarted = "Get Started";
+  static const String next1 = "Next";
+  static const String next2 = "Get Started";
 }
 
 class ResSocialSignUp {
