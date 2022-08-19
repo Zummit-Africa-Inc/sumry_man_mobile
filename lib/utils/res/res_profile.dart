@@ -1,43 +1,36 @@
 class ResWelcomePage {
   ResWelcomePage._();
-  static String sumry = "SumryMan";
-  static String zummit = "ZummitAfrica Inc.";
+  static const String sumry = "SumryMan";
+  static const String zummit = "ZummitAfrica Inc.";
 }
 
-class ResLogInScreen {
-  ResLogInScreen._();
-
-  static String welcome = "Welcome back!";
-  static String loginToAccount = "Login to existing account";
-  static String email = "Email";
-  static String password = "Password";
-  static String forgotPassword = "Forgot Password?";
-  static String login = "Login";
-  static String dontHaveAnAccount = "Don't have an account?";
-  static String signUp = "Sign Up";
-  static String oR = "Or";
+class ResMisc {
+  ResMisc._();
+  static const String or = "Or";
+  static const String password = "Password";
 }
 
-class ResSignUpScreen {
-  ResSignUpScreen._();
+class ResLoginScreen {
+  ResLoginScreen._();
 
-  static String welcome = "Sign Up";
-  static String register = "Register with us today!";
-  static String fullName = "Full Name";
-  static String email = "Email";
-  static String password = "Password";
-  static String confirmPassword = "Confirm Password";
-  static String signUp = "Sign Up";
-  static String alreadyHaveAnAccount = "Already have an account?";
-  static String login = "Login";
-  static String oR = "Or";
-}
-
-class ResSocial {
-  ResSocial._();
-
-  static String continueWithGoogle = "Continue with Google";
-  static String continueWithFacebook = "Continue with Facebook";
+  static const String skip = "Skip";
+  static const String header1 = "Welcome back!";
+  static const String header2 = "Sign Up";
+  static const String subHeader1 = "Login to existing account";
+  static const String subHeader2 = "Register with us today!";
+  static const String fullName = "Full Name";
+  static const String email = "Email";
+  static const String confirmPassword = "Confirm Password";
+  static const String forgotPassword = "Forgot Password?";
+  static const String login = "Login";
+  static const String dontHaveAnAccount = "Don't have an account?";
+  static const String alreadyHaveAnAccount = "Already have an account?";
+  static const String signUp = "Sign Up";
+  static const String oR = "Or";
+  static const String continueWithGoogle = "Continue with Google";
+  static const String signupWithGoogle = "Sign Up with Google";
+  static const String continueWithFacebook = "Continue with Facebook";
+  static const String signupWithFacebook = "Sign Up with Facebook";
 }
 
 class ResHomeScreen {
@@ -58,11 +51,19 @@ class ResHomeScreen {
 class ResCommentScreen {
   ResCommentScreen._();
 
-  static String leaveUsAComment = "Leave us a comment";
-  static String fullName = "Full Name";
-  static String emailAddress = "Email Address";
-  static String commentHere = "Comment here...";
-  static String leaveComment = "Leave Comment";
+  static const String leaveUsAComment = "Leave us a comment";
+  static const String fullName = "Full Name";
+  static const String emailAddress = "Email Address";
+  static const String commentHere = "Comment here...";
+  static const String leaveComment = "Leave Comment";
+}
+
+class ResAboutScreen {
+  ResAboutScreen._();
+
+  static const String title = "About\nSumryman";
+  static const String body =
+      "SumryMan is a text summarization app with support for input from different sources(eg. url(website), text input, file upload(support msdocs, text files(.text) and docx files).";
 }
 
 class ResOnboardingScreen {
@@ -78,16 +79,11 @@ class ResOnboardingScreen {
   static const String next2 = "Get Started";
 }
 
-class ResSocialSignUp {
-  ResSocialSignUp._();
+class ResDrawer {
+  ResDrawer._();
 
-  static String signUpWithGoogle = "Sign Up With Google";
-  static String signUpWithFaceBook = "Sign Up With Facebook";
-}
-
-class ResSocialLogIn {
-  ResSocialLogIn._();
-
-  static String continueWithGoogle = "Continue with Google";
-  static String continueWithFacebook = "Continue with Facebook";
+  static const String home = "Home";
+  static const String about = "About";
+  static const String login = "Login/Register";
+  static const String comment = "Comment";
 }

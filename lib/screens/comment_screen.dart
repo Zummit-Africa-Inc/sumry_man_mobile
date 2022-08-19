@@ -42,18 +42,24 @@ class CommentScreen extends StatelessWidget {
             ),
             vSpace(sPadding + sPadding / 2),
             InputField(
-              label: ResCommentScreen.fullName,
+              state: InputFieldState(
+                label: ResCommentScreen.fullName,
+              ),
             ),
             vSpace(sPadding),
             InputField(
-              label: ResCommentScreen.emailAddress,
+              state: InputFieldState(
+                label: ResCommentScreen.emailAddress,
+              ),
             ),
             vSpace(sPadding),
             Expanded(
               flex: 2,
               child: InputField(
-                label: ResCommentScreen.commentHere,
-                expands: true,
+                state: InputFieldState(
+                  label: ResCommentScreen.commentHere,
+                  expands: true,
+                ),
               ),
             ),
             vSpace(sPadding),
