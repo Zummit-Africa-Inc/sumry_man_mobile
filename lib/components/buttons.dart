@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sumry_app/utils/designs/colors.dart';
 
+import '../utils/designs/styles.dart';
+
 class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color? backgroundColor;

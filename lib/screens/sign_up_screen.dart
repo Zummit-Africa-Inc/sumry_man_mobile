@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sumry_app/components/buttons.dart';
-import 'package:sumry_app/models/pages.dart';
-import 'package:sumry_app/utilis/designs/assets.dart';
-import 'package:sumry_app/utilis/designs/colors.dart';
-import 'package:sumry_app/utilis/designs/styles.dart';
-import 'package:sumry_app/components/spacers.dart';
-import 'package:sumry_app/utilis/res/res_profile.dart';
+
+import '../components/buttons.dart';
+import '../components/spacers.dart';
+import '../utils/designs/assets.dart';
+import '../utils/designs/colors.dart';
+import '../utils/designs/routes.dart';
+import '../utils/designs/styles.dart';
+import '../utils/res/res_profile.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final double space = 18;
 
-   bool isPasswordVisible = true;
+  bool isPasswordVisible = true;
 
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -107,8 +108,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   suffixIcon: IconButton(
                     color: kPrimaryColor,
                     icon: isPasswordVisible
-                    ? Icon(Icons.visibility_off)
-                    : Icon(Icons.visibility),
+                        ? Icon(Icons.visibility_off)
+                        : Icon(Icons.visibility),
                     onPressed: () => setState(() {
                       isPasswordVisible = !isPasswordVisible;
                     }),
@@ -134,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textInputAction: TextInputAction.next,
                 obscureText: true,
                 decoration: InputDecoration(
-                  hintText: ResSignUpScreen.conrimPassword,
+                  hintText: ResSignUpScreen.confirmPassword,
                   hintStyle: sHintTextStyle,
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -149,7 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               vSpace(space * 3.0),
-              primaaryMediumButton(
+              AppButton(
                 onPressed: () {},
                 text: ResSignUpScreen.signUp,
               ),
@@ -165,7 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   hSpace(space / 3),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, SumryManApp.signInPath);
+                      Navigator.pushNamed(context, Routes.login);
                     },
                     child: Text(ResSignUpScreen.login,
                         style: sSignUpTextStyle.copyWith(

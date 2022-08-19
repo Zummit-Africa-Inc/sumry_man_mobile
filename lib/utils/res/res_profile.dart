@@ -15,13 +15,14 @@ class ResLogInScreen {
   static String login = "Login";
   static String dontHaveAnAccount = "Don't have an account?";
   static String signUp = "Sign Up";
-  static String oR = "or";
+  static String oR = "Or";
 }
 
 class ResSignUpScreen {
   ResSignUpScreen._();
 
   static String welcome = "Sign Up";
+  static String register = "Register with us today!";
   static String fullName = "Full Name";
   static String email = "Email";
   static String password = "Password";
@@ -29,7 +30,7 @@ class ResSignUpScreen {
   static String signUp = "Sign Up";
   static String alreadyHaveAnAccount = "Already have an account?";
   static String login = "Login";
-  static String oR = "or";
+  static String oR = "Or";
 }
 
 class ResSocial {
@@ -71,4 +72,18 @@ class ResOnboardingScreen2 {
   static String body =
       "Support for file upload(support msdocs, text files(.text) and docx files).";
   static String getStarted = "Get Started";
+}
+
+class ResSocialSignUp {
+  ResSocialSignUp._();
+
+  static String signUpWithGoogle = "Sign Up With Google";
+  static String signUpWithFaceBook = "Sign Up With Facebook";
+}
+
+class ResSocialLogIn {
+  ResSocialLogIn._();
+
+  static String continueWithGoogle = "Continue with Google";
+  static String continueWithFacebook = "Continue with Facebook";
 }

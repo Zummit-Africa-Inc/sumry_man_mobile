@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sumry_app/components/buttons.dart';
-import 'package:sumry_app/components/spacers.dart';
-import 'package:sumry_app/models/pages.dart';
-import 'package:sumry_app/utilis/designs/assets.dart';
-import 'package:sumry_app/utilis/designs/colors.dart';
-import 'package:sumry_app/utilis/designs/styles.dart';
-import 'package:sumry_app/utilis/res/res_profile.dart';
+
+import '../components/buttons.dart';
+import '../components/spacers.dart';
+import '../utils/designs/assets.dart';
+import '../utils/designs/colors.dart';
+import '../utils/designs/routes.dart';
+import '../utils/designs/styles.dart';
+import '../utils/res/res_profile.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -103,7 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               vSpace(space * 3.0),
-              primaaryMediumButton(
+              AppButton(
                 onPressed: () {},
                 text: ResLogInScreen.login,
               ),
@@ -119,7 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   hSpace(space / 3),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, SumryManApp.signUpPath);
+                      Navigator.pushNamed(context, Routes.signup);
                     },
                     child: Text(
                       ResLogInScreen.signUp,
