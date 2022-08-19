@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../screens/about_screen.dart';
 import '../../screens/comment_screen.dart';
 import '../../screens/home_screen.dart';
 import '../../screens/login_screen.dart';
@@ -22,7 +23,7 @@ class Routes {
   static Map<String, Widget Function(BuildContext)> routes = {
     onboarding: (context) => const OnboardingScreen(),
     home: (context) => const HomeScreen(),
-    // about: (context) => const DashboardScreen(),
+    about: (context) => const AboutScreen(),
     login: (context) => const LoginScreen(),
     comment: (context) => const CommentScreen(),
     splash: (context) => const SplashScreen(),

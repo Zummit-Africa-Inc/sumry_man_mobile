@@ -1,7 +1,7 @@
 class ResWelcomePage {
   ResWelcomePage._();
-  static String sumry = "SumryMan";
-  static String zummit = "ZummitAfrica Inc.";
+  static const String sumry = "SumryMan";
+  static const String zummit = "ZummitAfrica Inc.";
 }
 
 class ResMisc {
@@ -51,11 +51,19 @@ class ResHomeScreen {
 class ResCommentScreen {
   ResCommentScreen._();
 
-  static String leaveUsAComment = "Leave us a comment";
-  static String fullName = "Full Name";
-  static String emailAddress = "Email Address";
-  static String commentHere = "Comment here...";
-  static String leaveComment = "Leave Comment";
+  static const String leaveUsAComment = "Leave us a comment";
+  static const String fullName = "Full Name";
+  static const String emailAddress = "Email Address";
+  static const String commentHere = "Comment here...";
+  static const String leaveComment = "Leave Comment";
+}
+
+class ResAboutScreen {
+  ResAboutScreen._();
+
+  static const String title = "About\nSumryman";
+  static const String body =
+      "SumryMan is a text summarization app with support for input from different sources(eg. url(website), text input, file upload(support msdocs, text files(.text) and docx files).";
 }
 
 class ResOnboardingScreen {
@@ -69,11 +77,4 @@ class ResOnboardingScreen {
       "Support for file upload(support msdocs, text files(.text) and docx files).";
   static const String next1 = "Next";
   static const String next2 = "Get Started";
-}
-
-class ResSocialSignUp {
-  ResSocialSignUp._();
-
-  static String signUpWithGoogle = "Sign Up With Google";
-  static String signUpWithFaceBook = "Sign Up With Facebook";
 }
