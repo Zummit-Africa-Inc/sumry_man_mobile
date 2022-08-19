@@ -3,7 +3,6 @@ import 'package:sumry_app/utils/designs/colors.dart';
 
 import '../components/app_bar.dart';
 import '../components/buttons.dart';
-import '../components/copyright.dart';
 import '../components/drawer.dart';
 import '../components/input_field.dart';
 import '../components/spacers.dart';
@@ -56,14 +55,22 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: sSecondaryPadding),
                 child: InputField(
-                  label: ResHomeScreen.enterText,
+                  state: InputFieldState(
+                    textAlign: TextAlign.center,
+                    label: ResHomeScreen.enterText,
+                  ),
                 ),
               ),
               InputField(
-                label: ResHomeScreen.uploadText,
-                maxLines: 2,
-                icon: Icons.upload,
-                readOnly: true,
+                state: InputFieldState(
+                  textAlign: TextAlign.center,
+                  label: ResHomeScreen.uploadText,
+                  maxLines: 2,
+                  icon: Icon(
+                    Icons.upload,
+                  ),
+                  readOnly: true,
+                ),
               ),
             ],
           ),
@@ -78,18 +85,26 @@ class HomeScreen extends StatelessWidget {
           ),
           vSpace(sPadding),
           const InputField(
-            label: ResHomeScreen.result,
-            maxLines: 5,
+            state: InputFieldState(
+              label: ResHomeScreen.result,
+              maxLines: 5,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: sSecondaryPadding),
             child: Align(
               alignment: Alignment.centerRight,
               child: AppButton(
-                text: ResHomeScreen.summarize,
+                text: ResHomeScreen.copy,
+                icon: const Icon(
+                  Icons.copy,
+                  color: Colors.white,
+                ),
                 backgroundColor: theme.colorScheme.primary,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
               ),
             ),
           ),
@@ -102,6 +117,7 @@ class HomeScreen extends StatelessWidget {
                   text: ResCommentScreen.leaveUsAComment,
                   onPressed: () => Navigator.pushNamed(context, Routes.comment),
                   backgroundColor: Colors.transparent,
+                  border: theme.colorScheme.primary,
                   textColor: theme.colorScheme.primary,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

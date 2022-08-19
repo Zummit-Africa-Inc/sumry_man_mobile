@@ -1,184 +1,193 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../components/app_bar.dart';
 import '../components/buttons.dart';
+import '../components/input_field.dart';
+import '../components/or.dart';
 import '../components/spacers.dart';
 import '../utils/designs/assets.dart';
 import '../utils/designs/colors.dart';
+import '../utils/designs/dimens.dart';
 import '../utils/designs/routes.dart';
-import '../utils/designs/styles.dart';
 import '../utils/res/res_profile.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+enum LoginScreenState { login, signup }
+
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  final double space = 18;
-
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  var state = LoginScreenState.login;
+  final form = GlobalKey<FormState>();
 
-  bool isPasswordVisible = true;
+  void _switch() {
+    setState(() {
+      if (state == LoginScreenState.login) {
+        state = LoginScreenState.signup;
+      } else {
+        state = LoginScreenState.login;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 45),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    final theme = Theme.of(context);
+    final isLogin = state == LoginScreenState.login;
+
+    return Scaffold(
+      appBar: DefaultAppBar(
+        trailing: GestureDetector(
+          onTap: () => Navigator.pushNamed(context, Routes.home),
+          child: Text(
+            'Skip',
+            style: theme.textTheme.caption?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Form(
+          key: form,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: sPadding,
+              vertical: sPadding * 2,
+            ),
             children: [
               Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  ResLogInScreen.welcome,
-                  style: sSignUpTextStyle,
+                  isLogin ? ResLoginScreen.header1 : ResLoginScreen.header2,
+                  style: theme.textTheme.headline5?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
               ),
-              // vSpace(space -2),
+              vSpace(sSecondaryPadding / 2),
               Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  ResLogInScreen.loginToAccount,
-                  style: sSignUpTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: kTextColor,
-                  ),
+                  isLogin
+                      ? ResLoginScreen.subHeader1
+                      : ResLoginScreen.subHeader2,
+                  style: theme.textTheme.bodyText1,
                 ),
               ),
-              vSpace(space * 3),
-              TextFormField(
-                controller: emailController,
-                cursorColor: Colors.black,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  hintText: ResSignUpScreen.email,
-                  hintStyle: sHintTextStyle,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(9.0)),
-                    borderSide: BorderSide(color: kPrimaryColor, width: 1.4),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(9.0)),
-                    borderSide: BorderSide(color: kPrimaryColor, width: 1.4),
+              vSpace(sPadding * 2),
+              if (!isLogin) ...{
+                InputField(
+                  state: InputFieldState(
+                    label: ResLoginScreen.fullName,
+                    controller: nameController,
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
-              ),
-              vSpace(space * 1.5),
-              TextFormField(
-                controller: passwordController,
-                cursorColor: Colors.black,
-                obscureText: isPasswordVisible,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    color: kPrimaryColor,
-                    icon: isPasswordVisible
-                        ? Icon(Icons.visibility_off)
-                        : Icon(Icons.visibility),
-                    onPressed: () => setState(() {
-                      isPasswordVisible = !isPasswordVisible;
-                    }),
-                  ),
-                  hintText: ResSignUpScreen.password,
-                  hintStyle: sHintTextStyle,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(9.0)),
-                    borderSide: BorderSide(color: kPrimaryColor, width: 1.4),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(9.0)),
-                    borderSide: BorderSide(color: kPrimaryColor, width: 1.4),
-                  ),
+                vSpace(sPadding),
+              },
+              InputField(
+                state: InputFieldState(
+                  label: ResLoginScreen.email,
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                 ),
               ),
-              vSpace(space * 3.0),
+              vSpace(sPadding),
+              PasswordField(
+                state: InputFieldState(
+                  controller: passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+              ),
+              if (!isLogin) ...{
+                vSpace(sPadding),
+                const PasswordField(
+                  state: InputFieldState(
+                    label: ResLoginScreen.confirmPassword,
+                    keyboardType: TextInputType.visiblePassword,
+                  ),
+                ),
+              },
+              vSpace(sPadding * 2),
               AppButton(
                 onPressed: () {},
-                text: ResLogInScreen.login,
+                backgroundColor: theme.colorScheme.primary,
+                text: isLogin ? ResLoginScreen.login : ResLoginScreen.signUp,
               ),
-              vSpace(space / 2),
+              vSpace(sSecondaryPadding / 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    ResLogInScreen.dontHaveAnAccount,
-                    style: sSignUpTextStyle.copyWith(
-                        fontSize: 12, fontWeight: FontWeight.w400),
+                    isLogin
+                        ? ResLoginScreen.dontHaveAnAccount
+                        : ResLoginScreen.alreadyHaveAnAccount,
+                    style: theme.textTheme.caption?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
                   ),
-                  hSpace(space / 3),
+                  hSpace(sSecondaryPadding / 4),
                   InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.signup);
-                    },
+                    onTap: _switch,
                     child: Text(
-                      ResLogInScreen.signUp,
-                      style: sSignUpTextStyle.copyWith(
+                      isLogin ? ResLoginScreen.signUp : ResLoginScreen.login,
+                      style: theme.textTheme.caption?.copyWith(
                         color: kSocialButtonColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   )
                 ],
               ),
-              vSpace(space),
-              Row(
-                children: [
-                  const Expanded(
-                    child: Divider(
-                      thickness: 2.0,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Text(
-                      ResSignUpScreen.oR,
-                      style: sButtonTextStyle.copyWith(
-                        color: Colors.black,
-                        fontSize: 9.9,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  const Expanded(
-                    child: Divider(
-                      thickness: 2.0,
-                    ),
-                  ),
-                ],
+              vSpace(sPadding),
+              const Or(),
+              vSpace(sPadding),
+              AppButton(
+                onPressed: () {},
+                text: isLogin
+                    ? ResLoginScreen.continueWithGoogle
+                    : ResLoginScreen.signupWithGoogle,
+                backgroundColor: theme.colorScheme.primary,
+                icon: Image.asset(
+                  Assets.googleLogo,
+                ),
               ),
-              vSpace(space * 1.5),
-              socialButton(
-                onClick: () {},
-                text: ResSocialLogIn.continueWithGoogle,
-                image: Assets.googleLogo,
-                fillColor: kPrimaryColor,
-                textColor: Colors.white,
-              ),
-              vSpace(space),
-              socialButton(
-                onClick: () {},
-                text: ResSocialLogIn.continueWithFacebook,
-                image: Assets.facebookLogo,
-                fillColor: Colors.white,
-                textColor: kPrimaryColor,
+              vSpace(sSecondaryPadding),
+              AppButton(
+                onPressed: () {},
+                text: isLogin
+                    ? ResLoginScreen.continueWithFacebook
+                    : ResLoginScreen.signupWithFacebook,
+                textColor: theme.colorScheme.primary,
+                border: theme.colorScheme.primary,
+                backgroundColor: Colors.transparent,
+                icon: Image.asset(
+                  Assets.facebookLogo,
+                ),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }
