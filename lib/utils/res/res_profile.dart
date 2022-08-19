@@ -78,3 +78,12 @@ class ResOnboardingScreen {
   static const String next1 = "Next";
   static const String next2 = "Get Started";
 }
+
+class ResDrawer {
+  ResDrawer._();
+
+  static const String home = "Home";
+  static const String about = "About";
+  static const String login = "Login/Register";
+  static const String comment = "Comment";
+}
