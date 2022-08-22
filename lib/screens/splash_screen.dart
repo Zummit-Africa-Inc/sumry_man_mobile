@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
       const Duration(seconds: 2),
       () => Navigator.pushReplacementNamed(
         context,
-        Routes.screens,
+        Routes.onboarding,
       ),
     );
     return Scaffold(
@@ -27,7 +27,7 @@ class SplashScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(),
-            Image(
+            const Image(
               image: AssetImage(Assets.sumryLogo),
             ),
             vSpace(sPadding),

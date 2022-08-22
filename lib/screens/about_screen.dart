@@ -5,6 +5,7 @@ import 'package:sumry_app/components/copyright.dart';
 
 import '../components/app_bar.dart';
 import '../components/buttons.dart';
+import '../components/drawer.dart';
 import '../components/spacers.dart';
 import '../utils/designs/dimens.dart';
 import '../utils/res/res_profile.dart';
@@ -23,6 +24,7 @@ class AboutScreen extends StatelessWidget {
           textColor: theme.colorScheme.primary,
         ),
       ),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(sPadding, sPadding, sPadding, 0),
