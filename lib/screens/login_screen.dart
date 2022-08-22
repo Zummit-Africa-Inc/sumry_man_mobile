@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../components/app_bar.dart';
 import '../components/buttons.dart';
+import '../components/drawer.dart';
 import '../components/input_field.dart';
 import '../components/or.dart';
 import '../components/spacers.dart';
@@ -55,6 +56,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         ),
       ),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: Form(
           key: form,
