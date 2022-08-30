@@ -9,7 +9,7 @@ const host =
 
 class SummaryApi {
   Future<Map<String, dynamic>> summarize(
-      {required String text, required int sentenceCount}) async {
+      {required String text, int? sentenceCount}) async {
     Map<String, dynamic> summaryObject = {};
     print("TEXT: $text");
     Map<String, String> requestHeaders = {
@@ -17,7 +17,7 @@ class SummaryApi {
       "Access-Control-Allow-Origin": "*",
     };
 
-    Map<String, dynamic> body = {"text": text, "sentence_count": sentenceCount};
+    Map<String, dynamic> body = {"text": text, "sentence_count": 2};
     try {
       final response = await http.post(Uri.parse("$host/text"),
           headers: requestHeaders, body: json.encode(body));

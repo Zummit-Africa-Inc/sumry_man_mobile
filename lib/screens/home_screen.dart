@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sumry_app/services/summary_api.dart';
 import 'package:sumry_app/utils/designs/colors.dart';
 
 import '../components/app_bar.dart';
@@ -10,9 +11,19 @@ import '../utils/designs/dimens.dart';
 import '../utils/designs/routes.dart';
 import '../utils/res/res_profile.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() {
+    return _HomeScreenState();
+  }
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  String summary = "";
+  final summaryApi = SummaryApi();
+  TextEditingController textController = TextEditingController();
+  TextEditingController resultController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -50,12 +61,14 @@ class HomeScreen extends StatelessWidget {
                 color: theme.colorScheme.primary,
               ),
             ),
-            const _UploadOrInput(
+            _UploadOrInput(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: sSecondaryPadding),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: sSecondaryPadding),
                   child: InputField(
                     state: InputFieldState(
+                      controller: textController,
                       textAlign: TextAlign.center,
                       label: ResHomeScreen.enterText,
                     ),
@@ -66,7 +79,7 @@ class HomeScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     label: ResHomeScreen.uploadText,
                     maxLines: 2,
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.upload,
                     ),
                     readOnly: true,
@@ -82,12 +95,46 @@ class HomeScreen extends StatelessWidget {
                 backgroundColor: theme.colorScheme.primary,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                onPressed: () async {
+                  summary = textController.text;
+                  final Map<String, dynamic> result =
+                      await summaryApi.summarize(text: textController.text);
+                  if (result["status"] == "success") {
+                    setState(() {
+                      resultController.text = result["message"];
+                    });
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("An error has occured"),
+                        content: Text(result["message"].toString()),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              color: Colors.black,
+                              padding: const EdgeInsets.all(10),
+                              child: const Text(
+                                "okay",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
             ),
             vSpace(sPadding),
-            const InputField(
+            InputField(
               state: InputFieldState(
                 label: ResHomeScreen.result,
+                controller: resultController,
                 maxLines: 5,
               ),
             ),

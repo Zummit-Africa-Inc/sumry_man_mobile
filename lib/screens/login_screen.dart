@@ -115,7 +115,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               if (!isLogin) ...{
                 vSpace(sPadding),
-                const PasswordField(
+               PasswordField(
                   state: InputFieldState(
                     label: ResLoginScreen.confirmPassword,
                     keyboardType: TextInputType.visiblePassword,
