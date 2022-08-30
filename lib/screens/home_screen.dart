@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String summary = "";
+  int selectedIndex = 0;
   final summaryApi = SummaryApi();
   TextEditingController textController = TextEditingController();
   TextEditingController resultController = TextEditingController();
@@ -62,6 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             _UploadOrInput(
+              onChanged: (value) {
+                selectedIndex = value;
+              },
               children: [
                 Padding(
                   padding:
@@ -96,7 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 onPressed: () async {
-                  summary = textController.text;
+                  FocusScope.of(context).unfocus();
+                  debugPrint("Selected is $selectedIndex");
                   final Map<String, dynamic> result =
                       await summaryApi.summarize(text: textController.text);
                   if (result["status"] == "success") {
@@ -191,9 +195,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _UploadOrInput extends StatefulWidget {
   final List<Widget> children;
-  final ValueChanged<int>? onChanged;
+  final ValueChanged<int> onChanged;
 
-  const _UploadOrInput({Key? key, required this.children, this.onChanged})
+  const _UploadOrInput(
+      {Key? key, required this.children, required this.onChanged})
       : super(key: key);
 
   @override
@@ -207,16 +212,15 @@ class __UploadOrInputState extends State<_UploadOrInput> {
     return Row(
       children: [
         Radio(
-          activeColor: kButtonColor,
-          value: index,
-          groupValue: _selected,
-          onChanged: (_) => setState(
-            () {
-              _selected = index;
-              widget.onChanged?.call(_selected);
-            },
-          ),
-        ),
+            activeColor: kButtonColor,
+            value: index,
+            groupValue: _selected,
+            onChanged: (_) {
+              setState(() {
+                _selected = index;
+                widget.onChanged.call(_selected);
+              });
+            }),
         hSpace(sSecondaryPadding),
         Expanded(child: item),
       ],

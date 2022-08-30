@@ -11,16 +11,23 @@ class SummaryApi {
   Future<Map<String, dynamic>> summarize(
       {required String text, int? sentenceCount}) async {
     Map<String, dynamic> summaryObject = {};
-    print("TEXT: $text");
+    bool validURL = Uri.parse(text).isAbsolute;
+    print("isLink: ${validURL.toString()} \nTEXT: $text");
     Map<String, String> requestHeaders = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     };
 
-    Map<String, dynamic> body = {"text": text, "sentence_count": 2};
+    Map<String, dynamic> textBody = {"text": text, "sentence_count": 10};
+    Map<String, dynamic> urlBody = {"url": text, "sentence_count": 10};
+
     try {
-      final response = await http.post(Uri.parse("$host/text"),
-          headers: requestHeaders, body: json.encode(body));
+      final response =
+          await http.post(Uri.parse(validURL ? "$host/url" : "$host/text"),
+              headers: requestHeaders,
+              body: json.encode(
+                validURL ? urlBody : textBody,
+              ));
       print(response.statusCode.toString());
       print(response.body);
       final decodedResponse = json.decode(response.body);
