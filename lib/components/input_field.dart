@@ -86,6 +86,7 @@ class InputField extends StatelessWidget {
       textAlign: state.textAlign,
       controller: state.controller,
       expands: state.expands,
+      onTap: state.onClick,
       readOnly: state.readOnly,
       cursorColor: theme.colorScheme.primary,
       textInputAction: state.textInputAction,

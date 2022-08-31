@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:sumry_app/services/summary_api.dart';
 import 'package:sumry_app/utils/designs/colors.dart';
@@ -13,6 +14,7 @@ import '../utils/res/res_profile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _HomeScreenState();
@@ -24,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final summaryApi = SummaryApi();
   TextEditingController textController = TextEditingController();
   TextEditingController resultController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -81,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   state: InputFieldState(
                     textAlign: TextAlign.center,
                     label: ResHomeScreen.uploadText,
+                    onClick: selec,
                     maxLines: 2,
                     icon: const Icon(
                       Icons.upload,
@@ -239,3 +243,15 @@ class __UploadOrInputState extends State<_UploadOrInput> {
     );
   }
 }
+
+
+  void selec() async {
+     {
+      final result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['txt']
+      );
+      if (result ==null) {
+        return;
+      }
+  }}
