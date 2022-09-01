@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 const host =
     "https://summaryer-api.pk25mf6178910.eu-west-3.cs.amazonlightsail.com";
@@ -65,26 +66,31 @@ class SummaryApi {
       return Future.error(exception.toString());
     }
   }
-  Future sendRequest(String filepath, String filename) async {
 
+  Future sendRequest(String filepath, String filename) async {
+    var extension = filepath.split('.').last;
+    print("file extension is: $extension");
     var request = http.MultipartRequest("POST", Uri.parse("$host/upload_file"));
     var text = await http.MultipartFile.fromPath(
       "file_upload",
       filepath,
       filename: filename,
+      contentType: extension == "txt"
+          ? MediaType('text', 'plain')
+          : MediaType('application',
+              'vnd.openxmlformats-officedocument.wordprocessingml.document'),
     );
     request.files.add(text);
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);
     final responseData = json.decode(responsed.body);
-      if (response.statusCode == 200) {
-        print("Uploaded!");
-       print(responseData);
-      }else{
-        print(response.statusCode);
-        print('not Uploaded');
-      }
+    if (response.statusCode == 200) {
+      print("Uploaded!");
+      print(responseData);
+    } else {
+      print(response.statusCode);
+      print(responseData);
+      print('not Uploaded');
+    }
   }
-
-
 }

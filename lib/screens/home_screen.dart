@@ -1,4 +1,3 @@
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:sumry_app/services/summary_api.dart';
@@ -89,14 +88,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     textAlign: TextAlign.center,
                     onClick: () async {
                       final result = await FilePicker.platform.pickFiles(
-                          type: FileType.custom, allowedExtensions: ['txt']);
+                          type: FileType.custom,
+                          allowedExtensions: ['txt', 'docx']);
                       Result = result;
-                      setState((){});
+                      setState(() {});
                       if (result != null) {
                         PlatformFile file = result.files.first;
 
                         filePath = file.path!;
-                        fileName = file.name ;
+                        fileName = file.name;
 
                         print(file.name);
                         print(file.bytes);
@@ -104,19 +104,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         print(file.extension);
                         print(file.path);
                         print(filePath);
-
                       } else {
                         // User canceled the picker
                       }
-
                     },
-
-
-                    label: Result ==null ? ResHomeScreen.uploadText : fileName,
-
-
-
-
+                    label: Result == null ? ResHomeScreen.uploadText : fileName,
                     maxLines: 2,
                     icon: const Icon(
                       Icons.upload,
@@ -137,12 +129,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
                   debugPrint("Selected is $selectedIndex");
-                  final Map<String, dynamic> result =
-                      await summaryApi.summarize(text: textController.text);
-                      await summaryApi.sendRequest( filePath, fileName);
-                      setState(() {
-                        Result =null;
-                      });
+                  final Map<String, dynamic> result = selectedIndex == 0
+                      ? await summaryApi.summarize(text: textController.text)
+                      : await summaryApi.sendRequest(filePath, fileName);
+                  setState(() {
+                    Result = null;
+                  });
                   if (result["status"] == "success") {
                     setState(() {
                       resultController.text = result["message"];
