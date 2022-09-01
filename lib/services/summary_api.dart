@@ -65,4 +65,26 @@ class SummaryApi {
       return Future.error(exception.toString());
     }
   }
+  Future sendRequest(String filepath, String filename) async {
+
+    var request = http.MultipartRequest("POST", Uri.parse("$host/upload_file"));
+    var text = await http.MultipartFile.fromPath(
+      "file_upload",
+      filepath,
+      filename: filename,
+    );
+    request.files.add(text);
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+    final responseData = json.decode(responsed.body);
+      if (response.statusCode == 200) {
+        print("Uploaded!");
+       print(responseData);
+      }else{
+        print(response.statusCode);
+        print('not Uploaded');
+      }
+  }
+
+
 }
