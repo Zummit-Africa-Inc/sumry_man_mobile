@@ -31,13 +31,18 @@ class SummaryApi {
               ));
       print(response.statusCode.toString());
       print(response.body);
-      final decodedResponse = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
+        final decodedResponse = json.decode(response.body);
         print("SUMMARY SUCCESSFUL");
-        summaryObject = {
-          "status": "success",
-          "message": decodedResponse["summary"],
-        };
+        decodedResponse["summary"] == null
+            ? summaryObject = {
+                "status": "error",
+                "message": decodedResponse["error"],
+              }
+            : summaryObject = {
+                "status": "success",
+                "message": decodedResponse["summary"],
+              };
         return summaryObject;
       } else if (response.statusCode == 422) {
         print("VALIDATION ERROR");
@@ -51,7 +56,7 @@ class SummaryApi {
         print("SERVER ERROR");
         summaryObject = {
           "status": "error",
-          "message": "Server Timeout Error 500",
+          "message": "Internal Server Error",
         };
         return summaryObject;
       } else {
