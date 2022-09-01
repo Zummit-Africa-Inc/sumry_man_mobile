@@ -1,3 +1,4 @@
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:sumry_app/services/summary_api.dart';
@@ -22,6 +23,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String filePath = "";
+  String fileName = "";
+  FilePickerResult? Result;
   int selectedIndex = 0;
   final summaryApi = SummaryApi();
   TextEditingController textController = TextEditingController();
@@ -83,8 +87,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 InputField(
                   state: InputFieldState(
                     textAlign: TextAlign.center,
-                    label: ResHomeScreen.uploadText,
-                    onClick: selec,
+                    onClick: () async {
+                      final result = await FilePicker.platform.pickFiles(
+                          type: FileType.custom, allowedExtensions: ['txt']);
+                      Result = result;
+                      setState((){});
+                      if (result != null) {
+                        PlatformFile file = result.files.first;
+
+                        filePath = file.path!;
+                        fileName = file.name ;
+
+                        print(file.name);
+                        print(file.bytes);
+                        print(file.size);
+                        print(file.extension);
+                        print(file.path);
+                        print(filePath);
+
+                      } else {
+                        // User canceled the picker
+                      }
+
+                    },
+
+
+                    label: Result ==null ? ResHomeScreen.uploadText : fileName,
+
+
+
+
                     maxLines: 2,
                     icon: const Icon(
                       Icons.upload,
@@ -107,6 +139,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   debugPrint("Selected is $selectedIndex");
                   final Map<String, dynamic> result =
                       await summaryApi.summarize(text: textController.text);
+                      await summaryApi.sendRequest( filePath, fileName);
+                      setState(() {
+                        Result =null;
+                      });
                   if (result["status"] == "success") {
                     setState(() {
                       resultController.text = result["message"];
@@ -243,15 +279,3 @@ class __UploadOrInputState extends State<_UploadOrInput> {
     );
   }
 }
-
-
-  void selec() async {
-     {
-      final result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: ['txt']
-      );
-      if (result ==null) {
-        return;
-      }
-  }}
