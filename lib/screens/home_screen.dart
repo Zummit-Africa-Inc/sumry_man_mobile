@@ -1,4 +1,3 @@
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,6 +30,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final summaryApi = SummaryApi();
   TextEditingController textController = TextEditingController();
   TextEditingController resultController = TextEditingController();
+
+  Future<void> _copyToClipboard() async {
+    Clipboard.setData(ClipboardData(text: resultController.text)).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          content: const Text('Copied to clipboard'),
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,12 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: AppButton(
-                  onPressed: (){
-                    Clipboard.setData(new ClipboardData(text: resultController.text)).then((_){
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('Copied to your clipboard !'),backgroundColor: theme.colorScheme.primary,duration:const Duration(seconds: 2),));
-                    });
-                  },
+                  onPressed: _copyToClipboard,
                   text: ResHomeScreen.copy,
                   icon: const Icon(
                     Icons.copy,
