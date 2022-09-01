@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sumry_app/services/summary_api.dart';
 import 'package:sumry_app/utils/designs/colors.dart';
 
@@ -179,6 +180,12 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: AppButton(
+                  onPressed: (){
+                    Clipboard.setData(new ClipboardData(text: resultController.text)).then((_){
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text('Copied to your clipboard !'),backgroundColor: theme.colorScheme.primary,duration:const Duration(seconds: 2),));
+                    });
+                  },
                   text: ResHomeScreen.copy,
                   icon: const Icon(
                     Icons.copy,
