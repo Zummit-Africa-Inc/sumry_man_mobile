@@ -68,6 +68,7 @@ class SummaryApi {
   }
 
   Future sendRequest(String filepath, String filename) async {
+    Map<String, dynamic> summaryObject = {};
     var extension = filepath.split('.').last;
     print("file extension is: $extension");
     var request = http.MultipartRequest("POST", Uri.parse("$host/upload_file"));
@@ -84,12 +85,16 @@ class SummaryApi {
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);
     final responseData = json.decode(responsed.body);
-    if (response.statusCode == 200) {
-      print("Uploaded!");
-      print(responseData);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print("SUMMARY SUCCESSFUL");
+      summaryObject = {
+        "status": "success",
+        "message": responseData["summary"],
+      };
+      return summaryObject;
     } else {
       print(response.statusCode);
-      print(responseData);
+      print(responseData.toString());
       print('not Uploaded');
     }
   }
