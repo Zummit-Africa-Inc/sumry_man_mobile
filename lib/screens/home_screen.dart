@@ -1,3 +1,4 @@
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -104,8 +105,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           type: FileType.custom,
                           allowedExtensions: ['txt', 'docx']);
                       Result = result;
-                      setState(() {});
+                      setState(() {
+                      });
                       if (result != null) {
+                        selectedIndex = 1;
                         PlatformFile file = result.files.first;
 
                         filePath = file.path!;
@@ -148,12 +151,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   final Map<String, dynamic> result = selectedIndex == 0
                       ? await summaryApi.summarize(text: textController.text)
                       : await summaryApi.sendRequest(filePath, fileName);
-                  setState(() {
-                    Result = null;
-                  });
+
                   if (result["status"] == "success") {
                     setState(() {
                       resultController.text = result["message"];
+                      Result = null;
+                      selectedIndex=0;
                     });
                   } else {
                     showDialog(
