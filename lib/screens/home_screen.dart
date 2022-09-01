@@ -131,6 +131,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 onPressed: () async {
+                  setState(() {
+                    resultController.text = "";
+                  });
                   FocusScope.of(context).unfocus();
                   debugPrint("Selected is $selectedIndex");
                   final Map<String, dynamic> result = selectedIndex == 0
