@@ -81,13 +81,14 @@ class OnboardingScreen extends ConsumerWidget {
                   hSpace(sSecondaryPadding / 2),
                   TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: theme.colorScheme.secondary,
+                      // backgroundColor: theme.colorScheme.secondary,
                       shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(14),
                     ),
-                    child: Icon(
-                      Icons.navigate_next,
-                      color: theme.colorScheme.primary,
+                    child: (
+                      first?
+                      Image.asset('assets/images/Next_icon.png'):
+                          Image.asset('assets/images/nextPage.png')
                     ),
                     onPressed: () {
                       if (first) {

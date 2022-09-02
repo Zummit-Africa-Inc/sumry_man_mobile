@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables
+
 import 'package:flutter/material.dart';
 
 import '../utils/designs/dimens.dart';
@@ -20,7 +22,7 @@ class InputFieldState {
   final TextInputAction? textInputAction;
   final TextAlign textAlign;
 
-  const InputFieldState({
+  InputFieldState({
     this.controller,
     this.onClick,
     this.label = '',
@@ -71,7 +73,7 @@ class InputFieldState {
 class InputField extends StatelessWidget {
   final InputFieldState state;
 
-  const InputField({
+  InputField({
     Key? key,
     required this.state,
   }) : super(key: key);
@@ -84,6 +86,7 @@ class InputField extends StatelessWidget {
       textAlign: state.textAlign,
       controller: state.controller,
       expands: state.expands,
+      onTap: state.onClick,
       readOnly: state.readOnly,
       cursorColor: theme.colorScheme.primary,
       textInputAction: state.textInputAction,
