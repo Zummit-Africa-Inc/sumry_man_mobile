@@ -22,6 +22,8 @@ dependencies:
   dependencies:
   http_parser: ^4.0.1
   dio: ^4.0.6
+  firebase_core: ^1.21.1
+  firebase_auth: ^3.7.0
 
   # Firebase Database
 
