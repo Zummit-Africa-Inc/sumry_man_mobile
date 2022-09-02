@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "246841675181",
+    "project_id": "sumry-man",
+    "storage_bucket": "sumry-man.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246841675181:android:79adefe21f07f3e0cfa524",
+        "android_client_info": {
+          "package_name": "com.example.sumry_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246841675181-rfg7fntjejq08o7oik8ucrp84gn60398.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDALR6Nrtj-bu5Qj_S42QU1GTboSS79Udk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246841675181-rfg7fntjejq08o7oik8ucrp84gn60398.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
