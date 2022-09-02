@@ -12,7 +12,12 @@ class SummaryApi {
   Future<Map<String, dynamic>> summarize(
       {required String text, int? sentenceCount}) async {
     Map<String, dynamic> summaryObject = {};
-    bool validURL = Uri.parse(text).isAbsolute;
+    bool validURL = false;
+    if (text.length > 1000) {
+      validURL = false;
+    } else {
+      validURL = Uri.parse(text).isAbsolute;
+    }
     print("isLink: ${validURL.toString()} \nTEXT: $text");
     Map<String, String> requestHeaders = {
       "Content-Type": "application/json",
@@ -43,7 +48,6 @@ class SummaryApi {
                 "status": "success",
                 "message": decodedResponse["summary"],
               };
-        return summaryObject;
       } else if (response.statusCode == 422) {
         print("VALIDATION ERROR");
         summaryObject = {
@@ -51,31 +55,34 @@ class SummaryApi {
           "message":
               "Sorry, we are unable to process your text due to semantic errors.",
         };
-        return summaryObject;
       } else if (response.statusCode == 500 || response.statusCode == 501) {
         print("SERVER ERROR");
         summaryObject = {
           "status": "error",
           "message": "Internal Server Error",
         };
-        return summaryObject;
       } else {
         print("UNKNOWN ERROR");
         summaryObject = {
           "status": "error",
           "message": "Something went wrong",
         };
-        return summaryObject;
       }
     } catch (exception) {
       return Future.error(exception.toString());
     }
+    return summaryObject;
   }
 
   Future sendRequest(String filepath, String filename) async {
     Map<String, dynamic> summaryObject = {};
     var extension = filepath.split('.').last;
     print("file extension is: $extension");
+    if (filepath == "") {
+      summaryObject = {"status": "error", "message": "No file provided"};
+      return summaryObject;
+    }
+
     var request = http.MultipartRequest("POST", Uri.parse("$host/upload_file"));
     var text = await http.MultipartFile.fromPath(
       "file_upload",
@@ -89,18 +96,19 @@ class SummaryApi {
     request.files.add(text);
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);
-    final responseData = json.decode(responsed.body);
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       print("SUMMARY SUCCESSFUL");
+      final responseData = json.decode(responsed.body);
       summaryObject = {
         "status": "success",
         "message": responseData["summary"],
       };
-      return summaryObject;
     } else {
       print(response.statusCode);
-      print(responseData.toString());
       print('not Uploaded');
+      summaryObject = {"status": "error", "message": "Something went wrong"};
     }
+    return summaryObject;
   }
 }

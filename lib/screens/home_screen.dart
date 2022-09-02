@@ -104,8 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           type: FileType.custom,
                           allowedExtensions: ['txt', 'docx']);
                       Result = result;
-                      setState(() {
-                      });
+                      setState(() {});
                       if (result != null) {
                         selectedIndex = 1;
                         PlatformFile file = result.files.first;
@@ -155,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       resultController.text = result["message"];
                       Result = null;
-                      selectedIndex=0;
+                      selectedIndex = 0;
                     });
                   } else {
                     showDialog(
