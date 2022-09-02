@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sumry_app/data/repository/auth_repository.dart';
 
 import '../components/app_bar.dart';
 import '../components/buttons.dart';
@@ -115,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               if (!isLogin) ...{
                 vSpace(sPadding),
-               PasswordField(
+                PasswordField(
                   state: InputFieldState(
                     label: ResLoginScreen.confirmPassword,
                     keyboardType: TextInputType.visiblePassword,
@@ -124,7 +125,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               },
               vSpace(sPadding * 2),
               AppButton(
-                onPressed: () {},
+                onPressed: () async {
+                 if (form.currentState?.validate() == true){
+                   final repository = AuthRepository();
+                   final email = emailController.text;
+                   final password = passwordController.text;
+                   final result = isLogin
+                       ? await repository.login(email, password)
+                       : await repository.register(email, password);
+                   if (result != null){
+                     ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(content: Text(result))
+                     );
+                   }
+                 }
+                },
                 backgroundColor: theme.colorScheme.primary,
                 text: isLogin ? ResLoginScreen.login : ResLoginScreen.signUp,
               ),
