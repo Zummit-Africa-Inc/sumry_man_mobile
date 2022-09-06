@@ -90,6 +90,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       const EdgeInsets.symmetric(vertical: sSecondaryPadding),
                   child: InputField(
                     state: InputFieldState(
+                      onClick: () {
+                        selectedIndex = 0;
+                      },
                       controller: textController,
                       textAlign: TextAlign.center,
                       label: ResHomeScreen.enterText,
@@ -100,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   state: InputFieldState(
                     textAlign: TextAlign.center,
                     onClick: () async {
+                      selectedIndex = 1;
                       final result = await FilePicker.platform.pickFiles(
                           type: FileType.custom,
                           allowedExtensions: ['txt', 'docx']);
@@ -123,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                     label: Result == null ? ResHomeScreen.uploadText : fileName,
-                    maxLines: 2,
+                    //maxLines: ,
                     icon: const Icon(
                       Icons.upload,
                     ),
@@ -132,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            vSpace(sSecondaryPadding / 2),
+            vSpace(sPadding),
             Align(
               alignment: Alignment.centerRight,
               child: AppButton(
@@ -261,18 +265,27 @@ class __UploadOrInputState extends State<_UploadOrInput> {
   Widget _buildItem(Widget item, int index) {
     return Row(
       children: [
-        Radio(
-            activeColor: kButtonColor,
-            value: index,
-            groupValue: _selected,
-            onChanged: (_) {
-              setState(() {
-                _selected = index;
-                widget.onChanged.call(_selected);
-              });
-            }),
-        hSpace(sSecondaryPadding),
-        Expanded(child: item),
+        // Radio(
+        //     activeColor: kButtonColor,
+        //     value: index,
+        //     groupValue: _selected,
+        //     onChanged: (_) {
+        //       setState(() {
+        //         _selected = index;
+        //         widget.onChanged.call(_selected);
+        //       });
+        //     }),
+        // hSpace(sSecondaryPadding),
+        Expanded(
+          // onTap: () {
+          //   setState(() {
+          //     _selected = index;
+          //     print("selected index is $_selected");
+          //     widget.onChanged.call(_selected);
+          //   });
+          // },
+          child: item,
+        )
       ],
     );
   }
