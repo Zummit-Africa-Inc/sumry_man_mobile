@@ -20,7 +20,7 @@ class CommentScreen extends StatelessWidget {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: const DefaultAppBar(
-        trailing: UserImage(null),
+        trailing: UserImage(),
       ),
       resizeToAvoidBottomInset: false,
       body: Padding(

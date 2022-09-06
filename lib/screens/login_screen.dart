@@ -28,6 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   var state = LoginScreenState.login;
+  var isLoading = false;
   final form = GlobalKey<FormState>();
 
   void _switch() {
@@ -125,6 +126,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               },
               vSpace(sPadding * 2),
               AppButton(
+                isLoading: isLoading,
                 onPressed: onButtonClick,
                 backgroundColor: theme.colorScheme.primary,
                 text: isLogin ? ResLoginScreen.login : ResLoginScreen.signUp,
@@ -188,6 +190,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void onButtonClick() async {
     if (form.currentState?.validate() == true) {
+      setState(() => isLoading = true);
       final repository = ref.read(userRepository.notifier);
       final name = nameController.text;
       final email = emailController.text;
@@ -195,6 +198,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final result = state == LoginScreenState.login
           ? await repository.login(email, password)
           : await repository.register(name, email, password);
+      setState(() => isLoading = false);
       handleResult(result);
     }
   }

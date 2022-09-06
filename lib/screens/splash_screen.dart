@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../components/copyright.dart';
 import '../components/spacers.dart';
+import '../data/repository/user_repository.dart';
 import '../utils/designs/assets.dart';
 import '../utils/designs/dimens.dart';
 import '../utils/designs/routes.dart';
 import '../utils/res/res_profile.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends ConsumerWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     Future.delayed(
       const Duration(seconds: 2),
-      () => Navigator.pushReplacementNamed(
-        context,
-        Routes.onboarding,
-      ),
+      () {
+        final repo = ref.read(userRepository.notifier);
+        Navigator.pushReplacementNamed(
+          context,
+          repo.authenticated ? Routes.home : Routes.onboarding,
+        );
+      },
     );
     return Scaffold(
       backgroundColor: theme.colorScheme.primary,

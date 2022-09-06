@@ -85,5 +85,6 @@ class ResDrawer {
   static const String home = "Home";
   static const String about = "About";
   static const String login = "Login/Register";
+  static const String logout = "Logout";
   static const String comment = "Comment";
 }

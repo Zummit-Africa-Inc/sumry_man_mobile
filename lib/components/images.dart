@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserImage extends StatelessWidget {
-  final String? imageUrl;
+import '../data/repository/user_repository.dart';
 
-  const UserImage(this.imageUrl, {Key? key}) : super(key: key);
+class UserImage extends ConsumerWidget {
+  const UserImage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final imageUrl = ref.watch(userRepository)?.photoURL;
     return CircleAvatar(
       backgroundColor:
           imageUrl == null ? Theme.of(context).colorScheme.primary : null,

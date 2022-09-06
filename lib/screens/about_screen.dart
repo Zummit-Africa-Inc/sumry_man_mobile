@@ -17,13 +17,7 @@ class AboutScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: DefaultAppBar(
-        trailing: AppButton(
-          text: ResHomeScreen.loginRegister,
-          onPressed: () {},
-          textColor: theme.colorScheme.primary,
-        ),
-      ),
+      appBar: DefaultAppBar(trailing: LoginRegisterButton()),
       drawer: const AppDrawer(),
       body: SafeArea(
         child: Padding(

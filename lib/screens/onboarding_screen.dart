@@ -85,16 +85,14 @@ class OnboardingScreen extends ConsumerWidget {
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(14),
                     ),
-                    child: (
-                      first?
-                      Image.asset('assets/images/Next_icon.png'):
-                          Image.asset('assets/images/nextPage.png')
-                    ),
+                    child: (first
+                        ? Image.asset('assets/images/Next_icon.png')
+                        : Image.asset('assets/images/nextPage.png')),
                     onPressed: () {
                       if (first) {
                         _switch(ref);
                       } else {
-                        Navigator.pushNamed(context, Routes.home);
+                        Navigator.pushNamed(context, Routes.login);
                       }
                     },
                   ),

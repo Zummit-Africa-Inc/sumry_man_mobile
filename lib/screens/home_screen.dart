@@ -49,12 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       drawer: const AppDrawer(),
-      appBar: DefaultAppBar(
-        trailing: AppButton(
-          text: ResHomeScreen.loginRegister,
-          onPressed: () {},
-          textColor: theme.colorScheme.primary,
-        ),
+      appBar: const DefaultAppBar(
+        trailing: LoginRegisterButton(),
       ),
       body: SafeArea(
         child: ListView(

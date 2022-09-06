@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/repository/user_repository.dart';
 import '../utils/designs/dimens.dart';
+import '../utils/designs/routes.dart';
+import '../utils/res/res_profile.dart';
 import 'spacers.dart';
 
 class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
+  final bool isLoading;
   final Color? backgroundColor;
   final Color? textColor;
   final String text;
@@ -16,6 +21,7 @@ class AppButton extends StatelessWidget {
     Key? key,
     this.onPressed,
     required this.text,
+    this.isLoading = false,
     this.backgroundColor,
     this.textColor,
     this.padding,
@@ -27,7 +33,7 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return OutlinedButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
       style: OutlinedButton.styleFrom(
         padding: padding ?? const EdgeInsets.all(8),
         backgroundColor: backgroundColor ?? theme.colorScheme.secondary,
@@ -45,7 +51,7 @@ class AppButton extends StatelessWidget {
             hSpace(sSecondaryPadding / 2),
           },
           Text(
-            text,
+            isLoading ? 'please wait...' : text,
             style: theme.textTheme.button?.copyWith(
               color: textColor ?? Colors.white,
               fontWeight: FontWeight.w600,
@@ -54,5 +60,23 @@ class AppButton extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class LoginRegisterButton extends ConsumerWidget {
+  const LoginRegisterButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final repo = ref.watch(userRepository.notifier);
+    return repo.authenticated
+        ? const SizedBox()
+        : AppButton(
+            text: ResHomeScreen.loginRegister,
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.login);
+            },
+            textColor: Theme.of(context).colorScheme.primary,
+          );
   }
 }

@@ -8,6 +8,10 @@ final userRepository = StateNotifierProvider<UserRepository, User?>((ref) {
 class UserRepository extends StateNotifier<User?> {
   UserRepository(super.state);
 
+  bool get authenticated {
+    return FirebaseAuth.instance.currentUser != null;
+  }
+
   Future<String?> login(String email, String password) async {
     try {
       final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -57,5 +61,10 @@ class UserRepository extends StateNotifier<User?> {
       return e.toString();
     }
     return null;
+  }
+
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+    state = null;
   }
 }
