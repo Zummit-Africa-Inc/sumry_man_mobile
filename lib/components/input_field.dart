@@ -10,7 +10,7 @@ import '../utils/res/res_profile.dart';
 class InputFieldState {
   final TextEditingController? controller;
   final Function()? onClick;
-  final String label;
+   final String label;
   final Widget? icon;
   final TextInputType? keyboardType;
   final bool obscureText;
