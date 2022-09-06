@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sumry_app/data/repository/auth_repository.dart';
 
 import '../components/app_bar.dart';
 import '../components/buttons.dart';
@@ -8,6 +7,7 @@ import '../components/drawer.dart';
 import '../components/input_field.dart';
 import '../components/or.dart';
 import '../components/spacers.dart';
+import '../data/repository/user_repository.dart';
 import '../utils/designs/assets.dart';
 import '../utils/designs/colors.dart';
 import '../utils/designs/dimens.dart';
@@ -125,21 +125,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               },
               vSpace(sPadding * 2),
               AppButton(
-                onPressed: () async {
-                 if (form.currentState?.validate() == true){
-                   final repository = AuthRepository();
-                   final email = emailController.text;
-                   final password = passwordController.text;
-                   final result = isLogin
-                       ? await repository.login(email, password)
-                       : await repository.register(email, password);
-                   if (result != null){
-                     ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text(result))
-                     );
-                   }
-                 }
-                },
+                onPressed: onButtonClick,
                 backgroundColor: theme.colorScheme.primary,
                 text: isLogin ? ResLoginScreen.login : ResLoginScreen.signUp,
               ),
@@ -198,6 +184,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void onButtonClick() async {
+    if (form.currentState?.validate() == true) {
+      final repository = ref.read(userRepository.notifier);
+      final name = nameController.text;
+      final email = emailController.text;
+      final password = passwordController.text;
+      final result = state == LoginScreenState.login
+          ? await repository.login(email, password)
+          : await repository.register(name, email, password);
+      handleResult(result);
+    }
+  }
+
+  void handleResult(String? result) {
+    if (result == null) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, Routes.home, ModalRoute.withName(Routes.splash));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(result)));
+    }
   }
 
   @override
