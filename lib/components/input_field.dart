@@ -95,15 +95,15 @@ class InputField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: state.label,
         hintStyle: sHintTextStyle,
-        contentPadding: const EdgeInsets.symmetric(
+        contentPadding: state.readOnly  == false ? const EdgeInsets.symmetric(
           horizontal: sSecondaryPadding,
           vertical: sSecondaryPadding / 2,
-        ),
+        ) : null,
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(
             Radius.circular(sSecondaryPadding / 2),
           ),
-          borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.4),
+          borderSide: BorderSide(color: Colors.amber.shade500, width: 1.4),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(
