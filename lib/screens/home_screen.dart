@@ -25,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String filePath = "";
   String fileName = "";
+  bool isLoading = false;
   FilePickerResult? Result;
   int selectedIndex = 0;
   final summaryApi = SummaryApi();
@@ -143,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () async {
                   setState(() {
                     resultController.text = "";
+                    isLoading = true;
                   });
                   FocusScope.of(context).unfocus();
                   debugPrint("Selected is $selectedIndex");
@@ -152,11 +154,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   if (result["status"] == "success") {
                     setState(() {
+                      isLoading = false;
                       resultController.text = result["message"];
                       Result = null;
                       selectedIndex = 0;
                     });
                   } else {
+                    isLoading = false;
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -186,6 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
             vSpace(sPadding),
             InputField(
               state: InputFieldState(
+                icon: isLoading ? Center(child: CircularProgressIndicator()) : null,
                 label: ResHomeScreen.result,
                 controller: resultController,
                 maxLines: 5,
