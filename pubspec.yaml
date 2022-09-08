@@ -15,11 +15,12 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   google_fonts: ^2.1.0
+  path_provider: ^2.0.11
+  date_format: ^2.0.6
   hovering: ^1.0.4
   flutter_riverpod: ^1.0.4
   http: ^0.13.5
   file_picker: ^5.0.1
-  dependencies:
   http_parser: ^4.0.1
   dio: ^4.0.6
   firebase_core: ^1.21.1

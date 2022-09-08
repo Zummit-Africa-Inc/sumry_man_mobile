@@ -17,7 +17,7 @@ class UserImage extends ConsumerWidget {
               Icons.person,
               color: Colors.white,
             )
-          : Image.network(imageUrl!),
+          : Image.network(imageUrl),
     );
   }
 }
