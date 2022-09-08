@@ -1,6 +1,9 @@
-import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:date_format/date_format.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sumry_app/services/summary_api.dart';
 import 'package:sumry_app/utils/designs/colors.dart';
 
@@ -38,10 +41,61 @@ class _HomeScreenState extends State<HomeScreen> {
         SnackBar(
           duration: const Duration(seconds: 2),
           backgroundColor: Theme.of(context).colorScheme.primary,
-          content: const Text('Copied to clipboard'),
+          content: resultController.text.isEmpty
+              ? const Text('Nothing to copy')
+              : const Text('Copied to clipboard'),
         ),
       );
     });
+  }
+
+  Future<String?> getDownloadPath() async {
+    Directory? directory;
+    try {
+      if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        directory = Directory('/storage/emulated/0/Download');
+        // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
+        if (!await directory.exists()) {
+          directory = await getExternalStorageDirectory();
+        }
+      }
+    } catch (err) {
+      debugPrint("Cannot get download folder path");
+    }
+    return directory?.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await getDownloadPath();
+    final date = (formatDate(
+        DateTime.now(), [yyyy, '', mm, '', dd, '_', HH, '-', nn, '-', ss]));
+    String downloadName = "${date}_SumryMan.txt";
+    return File('$path/$downloadName');
+  }
+
+  Future<File> writeDownload(String result) async {
+    final file = await _localFile;
+    return file.writeAsString(result, mode: FileMode.append);
+  }
+
+  _handleDownload() async {
+    if (resultController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 2),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        content: const Text("Nothing to download"),
+      ));
+      return;
+    } else {
+      final file = await writeDownload(resultController.text);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 4),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        content: Text("file downloaded to ${file.path}"),
+      ));
+    }
   }
 
   @override
@@ -160,7 +214,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       selectedIndex = 0;
                     });
                   } else {
-                    isLoading = false;
+                    setState(() {
+                      isLoading = false;
+                    });
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -190,7 +246,9 @@ class _HomeScreenState extends State<HomeScreen> {
             vSpace(sPadding),
             InputField(
               state: InputFieldState(
-                icon: isLoading ? Center(child: CircularProgressIndicator()) : null,
+                icon: isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : null,
                 label: ResHomeScreen.result,
                 controller: resultController,
                 maxLines: 5,
@@ -232,6 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   hSpace(sSecondaryPadding),
                   AppButton(
+                    onPressed: _handleDownload,
                     text: ResHomeScreen.download,
                     backgroundColor: theme.colorScheme.primary,
                     padding:
@@ -266,25 +325,7 @@ class __UploadOrInputState extends State<_UploadOrInput> {
   Widget _buildItem(Widget item, int index) {
     return Row(
       children: [
-        // Radio(
-        //     activeColor: kButtonColor,
-        //     value: index,
-        //     groupValue: _selected,
-        //     onChanged: (_) {
-        //       setState(() {
-        //         _selected = index;
-        //         widget.onChanged.call(_selected);
-        //       });
-        //     }),
-        // hSpace(sSecondaryPadding),
         Expanded(
-          // onTap: () {
-          //   setState(() {
-          //     _selected = index;
-          //     print("selected index is $_selected");
-          //     widget.onChanged.call(_selected);
-          //   });
-          // },
           child: item,
         )
       ],
