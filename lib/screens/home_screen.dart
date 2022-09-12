@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:date_format/date_format.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sumry_app/services/summary_api.dart';
-import 'package:sumry_app/utils/designs/colors.dart';
 
 import '../components/app_bar.dart';
 import '../components/buttons.dart';
@@ -167,12 +166,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         filePath = file.path!;
                         fileName = file.name;
 
-                        print(file.name);
-                        print(file.bytes);
-                        print(file.size);
-                        print(file.extension);
-                        print(file.path);
-                        print(filePath);
                       } else {
                         // User canceled the picker
                       }
@@ -197,7 +190,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 onPressed: () async {
                   setState(() {
-                    resultController.text = "";
                     isLoading = true;
                   });
                   FocusScope.of(context).unfocus();
@@ -212,6 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       resultController.text = result["message"];
                       Result = null;
                       selectedIndex = 0;
+                      textController.text = "";
                     });
                   } else {
                     setState(() {
@@ -247,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
             InputField(
               state: InputFieldState(
                 icon: isLoading
-                    ? Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : null,
                 label: ResHomeScreen.result,
                 controller: resultController,
