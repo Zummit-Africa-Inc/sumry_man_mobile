@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sumry_app">
+    package="com.sumry_man.app">
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
    <application
-        android:label="sumry_app"
+        android:label="Sumry Man"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
