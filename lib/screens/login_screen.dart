@@ -28,7 +28,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   var state = LoginScreenState.login;
-  var isLoading = false;
+  var isLoginLoading = false;
+  var isGoogleLoading = false;
   final form = GlobalKey<FormState>();
 
   void _switch() {
@@ -126,8 +127,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               },
               vSpace(sPadding * 2),
               AppButton(
-                isLoading: isLoading,
-                onPressed: onButtonClick,
+                isLoading: isLoginLoading,
+                onPressed: onLoginClick,
                 backgroundColor: theme.colorScheme.primary,
                 text: isLogin ? ResLoginScreen.login : ResLoginScreen.signUp,
               ),
@@ -159,7 +160,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               const Or(),
               vSpace(sPadding),
               AppButton(
-                onPressed: () {},
+                isLoading: isGoogleLoading,
+                onPressed: onGoogleClick,
                 text: isLogin
                     ? ResLoginScreen.continueWithGoogle
                     : ResLoginScreen.signupWithGoogle,
@@ -188,9 +190,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  void onButtonClick() async {
+  void onLoginClick() async {
     if (form.currentState?.validate() == true) {
-      setState(() => isLoading = true);
+      setState(() => isLoginLoading = true);
       final repository = ref.read(userRepository.notifier);
       final name = nameController.text;
       final email = emailController.text;
@@ -198,9 +200,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final result = state == LoginScreenState.login
           ? await repository.login(email, password)
           : await repository.register(name, email, password);
-      setState(() => isLoading = false);
+      setState(() => isLoginLoading = false);
       handleResult(result);
     }
+  }
+
+  void onGoogleClick() async {
+    setState(() => isGoogleLoading = true);
+    final repository = ref.read(userRepository.notifier);
+    final result = await repository.signInWithGoogle();
+    setState(() => isGoogleLoading = false);
+    handleResult(result);
   }
 
   void handleResult(String? result) {
