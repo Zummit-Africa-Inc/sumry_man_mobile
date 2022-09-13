@@ -30,6 +30,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   var state = LoginScreenState.login;
   var isLoginLoading = false;
   var isGoogleLoading = false;
+  var isFacebookLoading = false;
   final form = GlobalKey<FormState>();
 
   void _switch() {
@@ -172,7 +173,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               vSpace(sSecondaryPadding),
               AppButton(
-                onPressed: () {},
+                isLoading: isFacebookLoading,
+                onPressed: onFacebookClick,
                 text: isLogin
                     ? ResLoginScreen.continueWithFacebook
                     : ResLoginScreen.signupWithFacebook,
@@ -210,6 +212,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final repository = ref.read(userRepository.notifier);
     final result = await repository.signInWithGoogle();
     setState(() => isGoogleLoading = false);
+    handleResult(result);
+  }
+
+  void onFacebookClick() async {
+    setState(() => isFacebookLoading = true);
+    final repository = ref.read(userRepository.notifier);
+    final result = await repository.signInWithFacebook();
+    setState(() => isFacebookLoading = false);
     handleResult(result);
   }
 

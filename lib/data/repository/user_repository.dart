@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -10,6 +11,7 @@ class UserRepository extends StateNotifier<User?> {
   UserRepository(super.state);
 
   final _google = GoogleSignIn();
+  final _facebook = FacebookAuth.instance;
   final _auth = FirebaseAuth.instance;
 
   bool get authenticated {
@@ -65,11 +67,36 @@ class UserRepository extends StateNotifier<User?> {
     }
 
     final auth = await account.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
+    final credential = GoogleAuthProvider.credential(
       accessToken: auth.accessToken,
       idToken: auth.idToken,
     );
 
+    try {
+      final result = await _auth.signInWithCredential(credential);
+      if (result.user != null && result.user?.isAnonymous == false) {
+        state = result.user;
+        return null;
+      }
+      return 'An error occured when creating your account';
+    } on FirebaseAuthException catch (e) {
+      return e.message ?? 'An error occured when creating your account';
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> signInWithFacebook() async {
+    final account = await _facebook.login(
+      permissions: ['email', 'public_profile'],
+    );
+
+    if (account.accessToken?.token == null) {
+      return 'An error occured when creating your account';
+    }
+
+    final credential =
+        FacebookAuthProvider.credential(account.accessToken!.token);
     try {
       final result = await _auth.signInWithCredential(credential);
       if (result.user != null && result.user?.isAnonymous == false) {
