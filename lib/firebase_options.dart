@@ -48,27 +48,30 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAmR4W1zc4GybDh6TjJudoCjc9MXnExSQQ',
-    appId: '1:246841675181:web:174c3e9d98485e2ecfa524',
+    appId: '1:246841675181:web:f122f7366baaf1decfa524',
     messagingSenderId: '246841675181',
     projectId: 'sumry-man',
     authDomain: 'sumry-man.firebaseapp.com',
+    databaseURL: 'https://sumry-man-default-rtdb.firebaseio.com',
     storageBucket: 'sumry-man.appspot.com',
-    measurementId: 'G-XE1FNTW36T',
+    measurementId: 'G-358PJP5SPD',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDALR6Nrtj-bu5Qj_S42QU1GTboSS79Udk',
-    appId: '1:246841675181:android:79adefe21f07f3e0cfa524',
+    appId: '1:246841675181:android:603f31f345255919cfa524',
     messagingSenderId: '246841675181',
     projectId: 'sumry-man',
+    databaseURL: 'https://sumry-man-default-rtdb.firebaseio.com',
     storageBucket: 'sumry-man.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBxd1n7JSWVQrBLxQ5CEH0XaEXTjZB3XpQ',
-    appId: '1:246841675181:ios:89f34262fad07c24cfa524',
+    appId: '1:246841675181:ios:d40b855e569de074cfa524',
     messagingSenderId: '246841675181',
     projectId: 'sumry-man',
+    databaseURL: 'https://sumry-man-default-rtdb.firebaseio.com',
     storageBucket: 'sumry-man.appspot.com',
     iosClientId: '246841675181-jn5k3li7l0sn0eiitppiohhev4vceljv.apps.googleusercontent.com',
     iosBundleId: 'com.example.sumryApp',

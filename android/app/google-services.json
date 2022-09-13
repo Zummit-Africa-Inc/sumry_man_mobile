@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "246841675181",
+    "firebase_url": "https://sumry-man-default-rtdb.firebaseio.com",
     "project_id": "sumry-man",
     "storage_bucket": "sumry-man.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:246841675181:android:79adefe21f07f3e0cfa524",
+        "mobilesdk_app_id": "1:246841675181:android:603f31f345255919cfa524",
         "android_client_info": {
-          "package_name": "com.example.sumry_app"
+          "package_name": "com.sumry_man.app"
         }
       },
       "oauth_client": [
@@ -29,6 +30,13 @@
             {
               "client_id": "246841675181-rfg7fntjejq08o7oik8ucrp84gn60398.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "246841675181-jn5k3li7l0sn0eiitppiohhev4vceljv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sumryApp"
+              }
             }
           ]
         }

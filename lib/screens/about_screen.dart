@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:sumry_app/components/copyright.dart';
 
 import '../components/app_bar.dart';
 import '../components/buttons.dart';
+import '../components/copyright.dart';
 import '../components/drawer.dart';
 import '../components/spacers.dart';
 import '../utils/designs/dimens.dart';
