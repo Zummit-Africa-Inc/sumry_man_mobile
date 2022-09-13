@@ -17,7 +17,12 @@ class UserImage extends ConsumerWidget {
               Icons.person,
               color: Colors.white,
             )
-          : Image.network(imageUrl),
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(45),
+              child: Image.network(
+                imageUrl,
+              ),
+            ),
     );
   }
 }
