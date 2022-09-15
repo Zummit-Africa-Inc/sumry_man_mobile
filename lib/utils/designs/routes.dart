@@ -15,7 +15,7 @@ class Routes {
   static const String login = "/login";
   static const String onboarding = "/welcome";
   static const String comment = "/comment";
-  static const String splash = "/";
+  static const String splash = "/splash";
 
   static Map<String, Widget Function(BuildContext)> routes = {
     onboarding: (context) => const OnboardingScreen(),

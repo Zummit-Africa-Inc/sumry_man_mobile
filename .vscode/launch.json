@@ -11,6 +11,19 @@
             "program": "${workspaceFolder}/<executable file>",
             "args": [],
             "cwd": "${workspaceFolder}"
-        }
+        },
+        {
+            "name": "Flutter Web",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-d",
+                "edge",
+                "--web-hostname",
+                "localhost",
+                "--web-port",
+                "8321"
+            ],
+        },
     ]
 }

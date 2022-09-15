@@ -10,7 +10,12 @@ final userRepository = StateNotifierProvider<UserRepository, User?>((ref) {
 class UserRepository extends StateNotifier<User?> {
   UserRepository(super.state);
 
-  final _google = GoogleSignIn();
+  final _google = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+    ],
+  );
   final _facebook = FacebookAuth.instance;
   final _auth = FirebaseAuth.instance;
 
@@ -80,6 +85,7 @@ class UserRepository extends StateNotifier<User?> {
       }
       return 'An error occured when creating your account';
     } on FirebaseAuthException catch (e) {
+      print(e.message);
       return e.message ?? 'An error occured when creating your account';
     } catch (e) {
       return e.toString();
@@ -89,6 +95,7 @@ class UserRepository extends StateNotifier<User?> {
   Future<String?> signInWithFacebook() async {
     final account = await _facebook.login(
       permissions: ['email', 'public_profile'],
+      loginBehavior: LoginBehavior.nativeWithFallback,
     );
 
     if (account.accessToken?.token == null) {

@@ -47,33 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAmR4W1zc4GybDh6TjJudoCjc9MXnExSQQ',
-    appId: '1:246841675181:web:f122f7366baaf1decfa524',
-    messagingSenderId: '246841675181',
-    projectId: 'sumry-man',
-    authDomain: 'sumry-man.firebaseapp.com',
-    databaseURL: 'https://sumry-man-default-rtdb.firebaseio.com',
-    storageBucket: 'sumry-man.appspot.com',
-    measurementId: 'G-358PJP5SPD',
+    apiKey: 'AIzaSyCYm4jLZ63qTjEsoLvFGujucoPD0tqTZ7U',
+    appId: '1:585684131203:web:4081f9c28038ea07d26ab6',
+    messagingSenderId: '585684131203',
+    projectId: 'sumry-man-app',
+    authDomain: 'sumry-man-app.firebaseapp.com',
+    storageBucket: 'sumry-man-app.appspot.com',
+    measurementId: 'G-4ERM4NW71Z',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDALR6Nrtj-bu5Qj_S42QU1GTboSS79Udk',
-    appId: '1:246841675181:android:603f31f345255919cfa524',
-    messagingSenderId: '246841675181',
-    projectId: 'sumry-man',
-    databaseURL: 'https://sumry-man-default-rtdb.firebaseio.com',
-    storageBucket: 'sumry-man.appspot.com',
+    apiKey: 'AIzaSyBeNPxXONIMAeMaxM9P97pvznzixZMJxH4',
+    appId: '1:585684131203:android:510e7781feec3782d26ab6',
+    messagingSenderId: '585684131203',
+    projectId: 'sumry-man-app',
+    storageBucket: 'sumry-man-app.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBxd1n7JSWVQrBLxQ5CEH0XaEXTjZB3XpQ',
-    appId: '1:246841675181:ios:d40b855e569de074cfa524',
-    messagingSenderId: '246841675181',
-    projectId: 'sumry-man',
-    databaseURL: 'https://sumry-man-default-rtdb.firebaseio.com',
-    storageBucket: 'sumry-man.appspot.com',
-    iosClientId: '246841675181-jn5k3li7l0sn0eiitppiohhev4vceljv.apps.googleusercontent.com',
+    apiKey: 'AIzaSyD7Dd18gc9Et71wc8k9AvpswBKg_5gu6BM',
+    appId: '1:585684131203:ios:4fddb55c96c4be64d26ab6',
+    messagingSenderId: '585684131203',
+    projectId: 'sumry-man-app',
+    storageBucket: 'sumry-man-app.appspot.com',
+    iosClientId: '585684131203-gm47cm4i29a8vt9raib70nk4ud0nf63j.apps.googleusercontent.com',
     iosBundleId: 'com.example.sumryApp',
   );
 }
