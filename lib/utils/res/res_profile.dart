@@ -43,6 +43,7 @@ class ResHomeScreen {
   static const String enterText = "Enter url/text here";
   static const String uploadText = "Upload txt/docx file here";
   static const String summarize = "Summarize";
+  static const String clear = "Clear";
   static const String result = "Results";
   static const String copy = "Copy";
   static const String download = "Download";
