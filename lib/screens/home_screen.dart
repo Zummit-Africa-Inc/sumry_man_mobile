@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:date_format/date_format.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../components/app_bar.dart';
@@ -10,43 +12,28 @@ import '../components/buttons.dart';
 import '../components/drawer.dart';
 import '../components/input_field.dart';
 import '../components/spacers.dart';
-import '../services/summary_api.dart';
+import '../data/repository/summary_repository.dart';
 import '../utils/designs/dimens.dart';
 import '../utils/designs/routes.dart';
 import '../utils/res/res_profile.dart';
+import '../utils/extensions.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _HomeScreenState();
-  }
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  var filePath = "";
-  var fileName = "";
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   var isLoading = false;
-  FilePickerResult? Result;
+  var fileName = '';
+  File? document;
   var selectedIndex = 0;
-  final summaryApi = SummaryApi();
+  var lines = 1;
+
   final textController = TextEditingController();
   final resultController = TextEditingController();
-
-  Future<void> _copyToClipboard() async {
-    Clipboard.setData(ClipboardData(text: resultController.text)).then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 2),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          content: resultController.text.isEmpty
-              ? const Text('Nothing to copy')
-              : const Text('Copied to clipboard'),
-        ),
-      );
-    });
-  }
 
   Future<String?> getDownloadPath() async {
     Directory? directory;
@@ -81,19 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _handleDownload() async {
     if (resultController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        content: const Text("Nothing to download"),
-      ));
-      return;
+      context.showSnackMessage('Nothing to download');
     } else {
-      final file = await writeDownload(resultController.text);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 4),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        content: Text("file downloaded to ${file.path}"),
-      ));
+      writeDownload(resultController.text).then(
+        (file) => context.showSnackMessage('File downloaded to ${file.path}'),
+      );
     }
   }
 
@@ -108,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(
         child: ListView(
+          shrinkWrap: true,
           padding: const EdgeInsets.symmetric(horizontal: sPadding),
           children: [
             Align(
@@ -134,9 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(vertical: sSecondaryPadding),
               child: InputField(
                 state: InputFieldState(
-                  onClick: () {
-                    selectedIndex = 0;
-                  },
+                  onClick: () => setState(() => selectedIndex = 1),
                   controller: textController,
                   textAlign: TextAlign.center,
                   label: ResHomeScreen.enterText,
@@ -146,109 +124,60 @@ class _HomeScreenState extends State<HomeScreen> {
             InputField(
               state: InputFieldState(
                 textAlign: TextAlign.center,
-                onClick: () async {
-                  selectedIndex = 1;
-                  final result = await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['txt', 'docx']);
-                  Result = result;
-                  setState(() {});
-                  if (result != null) {
-                    selectedIndex = 1;
-                    PlatformFile file = result.files.first;
-
-                    filePath = file.path!;
-                    fileName = file.name;
-                  } else {
-                    // User canceled the picker
-                  }
-                },
-                label: Result == null ? ResHomeScreen.uploadText : fileName,
-                //maxLines: ,
+                onClick: _selectFile,
+                label: document == null ? ResHomeScreen.uploadText : fileName,
                 icon: const Icon(
                   Icons.upload,
                 ),
                 readOnly: true,
               ),
             ),
-            vSpace(sPadding),
+            vSpace(sSecondaryPadding),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 AppButton(
                   text: ResHomeScreen.clear,
                   backgroundColor: theme.colorScheme.primary,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  onPressed: () {
-                    setState(() {
-                      textController.clear();
-                      Result = null;
-                    });
-                  },
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  onPressed: _clearInput,
                 ),
+                const Spacer(),
+                if (selectedIndex != 2) ...{
+                  SizedBox(
+                    width: 80,
+                    child: DropdownTextField<int>(
+                      value: lines,
+                      items: List.generate(10, (index) => index + 1),
+                      label: ResHomeScreen.lineCount,
+                      onItemChanged: (value) {
+                        lines = value ?? lines;
+                      },
+                    ),
+                  )
+                },
+                hSpace(sSecondaryPadding / 2),
                 AppButton(
+                  isLoading: isLoading,
                   text: ResHomeScreen.summarize,
                   backgroundColor: theme.colorScheme.primary,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    FocusScope.of(context).unfocus();
-                    debugPrint("Selected is $selectedIndex");
-                    final Map<String, dynamic> result = selectedIndex == 0
-                        ? await summaryApi.summarize(text: textController.text)
-                        : await summaryApi.sendRequest(filePath, fileName);
-
-                    if (result["status"] == "success") {
-                      setState(() {
-                        isLoading = false;
-                        resultController.text = result["message"];
-                        Result = null;
-                        selectedIndex = 0;
-                        textController.text = "";
-                      });
-                    } else {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text("An error has occurred"),
-                          content: Text(result["message"].toString()),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Container(
-                                color: Colors.black,
-                                padding: const EdgeInsets.all(10),
-                                child: const Text(
-                                  "okay",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  },
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  onPressed: _summarize,
                 ),
               ],
             ),
-            vSpace(sPadding),
+            vSpace(sSecondaryPadding),
             InputField(
               state: InputFieldState(
-                icon: isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : null,
                 label: ResHomeScreen.result,
                 controller: resultController,
+                readOnly: true,
                 maxLines: 5,
               ),
             ),
@@ -278,21 +207,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   AppButton(
                     text: ResCommentScreen.leaveUsAComment,
-                    onPressed: () =>
-                        Navigator.pushNamed(context, Routes.comment),
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      Routes.comment,
+                    ),
                     backgroundColor: Colors.transparent,
                     border: theme.colorScheme.primary,
                     textColor: theme.colorScheme.primary,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                   ),
                   hSpace(sSecondaryPadding),
                   AppButton(
                     onPressed: _handleDownload,
                     text: ResHomeScreen.download,
                     backgroundColor: theme.colorScheme.primary,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                   ),
                 ],
               ),
@@ -302,5 +237,83 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    resultController.dispose();
+  }
+
+  _selectFile() async {
+    selectedIndex = 2;
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['txt', 'docx'],
+    );
+
+    if (result != null) {
+      final file = result.files.first;
+
+      setState(() {
+        if (kIsWeb) {
+          document = File.fromRawPath(file.bytes!);
+        } else {
+          document = File(file.path!);
+        }
+        fileName = file.name;
+      });
+    }
+  }
+
+  _copyToClipboard() async {
+    Clipboard.setData(ClipboardData(text: resultController.text)).then((value) {
+      context.showSnackMessage(
+        resultController.text.isEmpty
+            ? 'Nothing to copy'
+            : 'Copied to clipboard',
+      );
+    });
+  }
+
+  _clearInput() {
+    setState(() {
+      textController.clear();
+      document = null;
+      selectedIndex = 0;
+      FocusScope.of(context).unfocus();
+    });
+  }
+
+  _summarize() async {
+    String? error;
+    if (selectedIndex == 0) {
+      error = 'Please select something to summarize';
+    } else if (selectedIndex == 1 && textController.text.isEmpty) {
+      error = 'Please type in the text/url you want to summarize';
+    } else if (selectedIndex == 2 && document == null) {
+      error = 'Please upload a valid file to summarize';
+    }
+
+    if (error == null) {
+      setState(() => isLoading = true);
+      FocusScope.of(context).unfocus();
+
+      final repo = ref.read(summaryRepository);
+      final result = selectedIndex == 1
+          ? await repo.summarize(textController.text, lines)
+          : await repo.summarizeFile(document!, lines);
+
+      setState(() {
+        isLoading = false;
+        if (result.isSuccess) {
+          resultController.text = result.data ?? '';
+        } else {
+          context.showSnackMessage(result.message ?? '');
+        }
+      });
+    } else {
+      context.showSnackMessage(error);
+    }
   }
 }
