@@ -245,6 +245,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     textController.dispose();
     resultController.dispose();
   }
