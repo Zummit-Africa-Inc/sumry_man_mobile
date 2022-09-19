@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:date_format/date_format.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:sumry_man/utils/designs/colors.dart';
 
 import '../components/app_bar.dart';
@@ -239,13 +241,23 @@ class _HomeScreenState extends State<HomeScreen> {
     final path = await getDownloadPath();
     final date = (formatDate(
         DateTime.now(), [yyyy, '', mm, '', dd, '_', HH, '-', nn, '-', ss]));
-    String downloadName = "${date}_SumryMan.txt";
+    String downloadName = "${date}_SumryMan.pdf";
     return File('$path/$downloadName');
   }
 
   Future<File> writeDownload(String result) async {
     final file = await _localFile;
-    return file.writeAsString(result, mode: FileMode.append);
+    final pdf = pw.Document();
+
+    pdf.addPage(pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Padding(
+            padding: const pw.EdgeInsets.all(10),
+            child: pw.Text(result),
+          ); // Center
+        })); // Pa
+    return file.writeAsBytes(await pdf.save());
   }
 
   _handleDownload() async {
