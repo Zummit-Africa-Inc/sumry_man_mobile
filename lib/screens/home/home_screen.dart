@@ -7,16 +7,17 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../components/app_bar.dart';
-import '../components/buttons.dart';
-import '../components/drawer.dart';
-import '../components/input_field.dart';
-import '../components/spacers.dart';
-import '../data/repository/summary_repository.dart';
-import '../utils/designs/dimens.dart';
-import '../utils/designs/routes.dart';
-import '../utils/res/res_profile.dart';
-import '../utils/extensions.dart';
+import '../../components/app_bar.dart';
+import '../../components/buttons.dart';
+import '../../components/drawer.dart';
+import '../../components/input_field.dart';
+import '../../components/spacers.dart';
+import '../../data/repository/summary_repository.dart';
+import '../../utils/designs/dimens.dart';
+import '../../utils/designs/routes.dart';
+import '../../utils/res/res_profile.dart';
+import '../../utils/extensions.dart';
+import 'home_view_model.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -79,6 +80,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final viewModel = ref.read(homeViewModel);
 
     return Scaffold(
       drawer: const AppDrawer(),
@@ -186,7 +188,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: AppButton(
-                  onPressed: _copyToClipboard,
+                  onPressed: () {
+                    viewModel.copyToClipboard(resultController.text, context);
+                  },
                   text: ResHomeScreen.copy,
                   icon: const Icon(
                     Icons.copy,
@@ -264,16 +268,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         fileName = file.name;
       });
     }
-  }
-
-  _copyToClipboard() async {
-    Clipboard.setData(ClipboardData(text: resultController.text)).then((value) {
-      context.showSnackMessage(
-        resultController.text.isEmpty
-            ? 'Nothing to copy'
-            : 'Copied to clipboard',
-      );
-    });
   }
 
   _clearInput() {
