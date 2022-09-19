@@ -39,10 +39,11 @@ class ResHomeScreen {
   static const String loginRegister = "Login/Register";
   static const String header = "Summarize Urls, Text and Documents files";
   static const String subHeader =
-      "SumryMan is a text summarization app with support for input from differnet sources(eg. url(website), text input, file upload(support msdocs, text files(.text) and docx files).";
+      "SumryMan is a text summarization app with support for input from different sources(eg. url(website), text input, file upload(support msdocs, text files(.text) and docx files).";
   static const String enterText = "Enter url/text here";
   static const String uploadText = "Upload txt/docx file here";
   static const String summarize = "Summarize";
+  static const String lineCount = "Sentences";
   static const String clear = "Clear";
   static const String result = "Results";
   static const String copy = "Copy";

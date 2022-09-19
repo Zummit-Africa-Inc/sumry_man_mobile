@@ -28,6 +28,10 @@ dependencies:
   firebase_database: ^7.2.1
   google_sign_in: ^5.4.1
   flutter_facebook_auth: ^4.4.1+1
+  cached_network_image: ^3.2.0
+  json_annotation: ^4.6.0
+  retrofit: ^3.0.1+1
+  docx_template: ^0.3.3
 
   # Firebase Database
 
@@ -37,6 +41,10 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   change_app_package_name: ^1.1.0
+  json_serializable: ^6.3.1
+  build_runner: ^2.2.0
+  retrofit_generator: ^4.0.2
+  copy_with_extension_gen: ^4.0.2
 
 flutter:
 

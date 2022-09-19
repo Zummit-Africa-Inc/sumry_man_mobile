@@ -7,7 +7,10 @@ extension BuildContextExtension on BuildContext {
 
   void showSnackMessage(String message) {
     ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(content: Text(message)),
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Theme.of(this).colorScheme.primary,
+      ),
     );
   }
 }

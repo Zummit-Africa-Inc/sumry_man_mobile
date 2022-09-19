@@ -10,7 +10,7 @@ import '../utils/res/res_profile.dart';
 class InputFieldState {
   final TextEditingController? controller;
   final Function()? onClick;
-   final String label;
+  final String label;
   final Widget? icon;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -95,21 +95,29 @@ class InputField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: state.label,
         hintStyle: sHintTextStyle,
-        contentPadding: state.readOnly  == false ? const EdgeInsets.symmetric(
-          horizontal: sSecondaryPadding,
-          vertical: sSecondaryPadding / 2,
-        ) : null,
+        contentPadding: state.readOnly == false
+            ? const EdgeInsets.symmetric(
+                horizontal: sSecondaryPadding,
+                vertical: sSecondaryPadding / 2,
+              )
+            : null,
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(
             Radius.circular(sSecondaryPadding / 2),
           ),
-          borderSide: BorderSide(color: Colors.amber.shade500, width: 1.4),
+          borderSide: BorderSide(
+            color: theme.colorScheme.secondary,
+            width: 1.4,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(
             Radius.circular(sSecondaryPadding / 2),
           ),
-          borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.4),
+          borderSide: BorderSide(
+            color: theme.colorScheme.primary,
+            width: 1.4,
+          ),
         ),
         suffixIcon: state.icon,
       ),
@@ -150,6 +158,60 @@ class _PasswordFieldState extends State<PasswordField> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DropdownTextField<T> extends StatelessWidget {
+  final String label;
+  final T? value;
+  final List<T> items;
+  final Function(T?) onItemChanged;
+  final String? Function(T?)? validator;
+
+  const DropdownTextField({
+    Key? key,
+    this.value,
+    this.validator,
+    required this.items,
+    required this.label,
+    required this.onItemChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.overline,
+        ),
+        DropdownButtonFormField(
+          value: value,
+          validator: validator,
+          items: items
+              .map(
+                (item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(
+                    item.toString(),
+                    style: theme.textTheme.bodyText2
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              )
+              .toList(),
+          onChanged: onItemChanged,
+          decoration: const InputDecoration(
+            filled: true,
+            fillColor: Colors.transparent,
+          ),
+          style:
+              theme.textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w600),
+        ),
+      ],
     );
   }
 }
