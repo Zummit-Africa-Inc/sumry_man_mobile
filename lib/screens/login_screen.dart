@@ -171,20 +171,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Assets.googleLogo,
                 ),
               ),
-              vSpace(sSecondaryPadding),
-              AppButton(
-                isLoading: isFacebookLoading,
-                onPressed: onFacebookClick,
-                text: isLogin
-                    ? ResLoginScreen.continueWithFacebook
-                    : ResLoginScreen.signupWithFacebook,
-                textColor: theme.colorScheme.primary,
-                border: theme.colorScheme.primary,
-                backgroundColor: Colors.transparent,
-                icon: Image.asset(
-                  Assets.facebookLogo,
-                ),
-              ),
+              // vSpace(sSecondaryPadding),
+              // AppButton(
+              //   isLoading: isFacebookLoading,
+              //   onPressed: onFacebookClick,
+              //   text: isLogin
+              //       ? ResLoginScreen.continueWithFacebook
+              //       : ResLoginScreen.signupWithFacebook,
+              //   textColor: theme.colorScheme.primary,
+              //   border: theme.colorScheme.primary,
+              //   backgroundColor: Colors.transparent,
+              //   icon: Image.asset(
+              //     Assets.facebookLogo,
+              //   ),
+              // ),
             ],
           ),
         ),
