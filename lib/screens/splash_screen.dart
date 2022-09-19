@@ -32,15 +32,15 @@ class SplashScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(),
-            const Image(
-              image: AssetImage(Assets.sumryLogo),
-            ),
+            // const Image(
+            //   image: AssetImage(Assets.sumryLogo),
+            // ),
             vSpace(sPadding),
             Text(
               ResWelcomePage.sumry,
               style: theme.textTheme.headline4?.copyWith(
                 fontWeight: FontWeight.w500,
-                color: Colors.white,
+                color: theme.colorScheme.secondary,
               ),
             ),
             const Spacer(),

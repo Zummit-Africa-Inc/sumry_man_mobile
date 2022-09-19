@@ -38,8 +38,13 @@ class SummaryRepository {
   Future<Result<String>> _summarizeUrl(String url, int sentenceCount) async {
     return remote
         .summarizeUrl(UrlSummaryRequest(url, sentenceCount))
-        .then((response) => Result.success(response.summary))
-        .onError((e, _) => Result.failure(_errorText(e)));
+        .then((response) {
+      if (response.summary.isEmpty) {
+        return Result.failure<String>('The url ($url) does not have a summary');
+      } else {
+        return Result.success(response.summary);
+      }
+    }).onError((e, _) => Result.failure(_errorText(e)));
   }
 
   Future<Result<String>> summarizeFile(File file, int sentenceCount) async {
