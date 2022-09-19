@@ -1,9 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:date_format/date_format.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sumry_man/utils/designs/colors.dart';
 
 import '../components/app_bar.dart';
 import '../components/buttons.dart';
@@ -33,6 +37,171 @@ class _HomeScreenState extends State<HomeScreen> {
   final summaryApi = SummaryApi();
   final textController = TextEditingController();
   final resultController = TextEditingController();
+
+  void showLengthDialog(BuildContext context, ThemeData theme) {
+    int summaryLength = 5;
+    showGeneralDialog(
+      context: context,
+      barrierLabel: "Barrier",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionDuration: Duration(milliseconds: 200),
+      pageBuilder: (_, __, ___) {
+        return StatefulBuilder(builder: (context, setState) {
+          return Center(
+            child: Container(
+              height: 250,
+              //margin: EdgeInsets.symmetric(horizontal: 20),
+              width: 250,
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Select number of sentences",
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RawMaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            if (summaryLength <= 1) {
+                              return;
+                            } else {
+                              summaryLength = summaryLength - 1;
+                            }
+                          });
+                          debugPrint("dialog state changed");
+                        },
+                        elevation: 6.0,
+                        shape: CircleBorder(),
+                        fillColor: kPrimaryColor,
+                        constraints: BoxConstraints.tightFor(
+                          width: 56.0,
+                          height: 56.0,
+                        ),
+                        child:
+                            Icon(Icons.remove, color: Colors.white, size: 30),
+                      ),
+                      Text(
+                        "$summaryLength",
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 36,
+                        ),
+                      ),
+                      RawMaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            if (summaryLength >= 10) {
+                              return;
+                            } else {
+                              summaryLength = summaryLength + 1;
+                            }
+                          });
+                        },
+                        elevation:
+                            6.0, // will show only when onpress is defined. it is disabled by default.
+                        shape: CircleBorder(),
+                        fillColor: kPrimaryColor,
+                        constraints: BoxConstraints.tightFor(
+                          width: 56.0,
+                          height: 56.0,
+                        ),
+                        child: Icon(Icons.add, color: Colors.white, size: 30),
+                      )
+                    ],
+                  ),
+                  AppButton(
+                    text: ResHomeScreen.summarize,
+                    backgroundColor: theme.colorScheme.primary,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                      summarize(summaryLength);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+      },
+      transitionBuilder: (_, anim, __, child) {
+        Tween<Offset> tween;
+        if (anim.status == AnimationStatus.reverse) {
+          tween = Tween(begin: Offset(0, 1), end: Offset.zero);
+        } else {
+          tween = Tween(begin: Offset(0, 1), end: Offset.zero);
+        }
+
+        return SlideTransition(
+          position: tween.animate(anim),
+          child: FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
+  void summarize(int length) async {
+    setState(() {
+      isLoading = true;
+    });
+    debugPrint("Selected is $selectedIndex");
+
+    final Map<String, dynamic> result = selectedIndex == 0
+        ? await summaryApi.summarize(
+            text: textController.text, sentenceCount: length)
+        : await summaryApi.sendRequest(
+            filepath: filePath, filename: fileName, sentenceCount: length);
+
+    if (result["status"] == "success") {
+      setState(() {
+        isLoading = false;
+        resultController.text = result["message"];
+        Result = null;
+        selectedIndex = 0;
+        textController.text = "";
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("An error has occurred"),
+          content: Text(result["message"].toString()),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                color: Colors.black,
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  "okay",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   Future<void> _copyToClipboard() async {
     Clipboard.setData(ClipboardData(text: resultController.text)).then((value) {
@@ -185,6 +354,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       textController.clear();
                       Result = null;
                     });
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
                   },
                 ),
                 AppButton(
@@ -193,50 +367,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
                     FocusScope.of(context).unfocus();
-                    debugPrint("Selected is $selectedIndex");
-                    final Map<String, dynamic> result = selectedIndex == 0
-                        ? await summaryApi.summarize(text: textController.text)
-                        : await summaryApi.sendRequest(filePath, fileName);
-
-                    if (result["status"] == "success") {
-                      setState(() {
-                        isLoading = false;
-                        resultController.text = result["message"];
-                        Result = null;
-                        selectedIndex = 0;
-                        textController.text = "";
-                      });
-                    } else {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text("An error has occurred"),
-                          content: Text(result["message"].toString()),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Container(
-                                color: Colors.black,
-                                padding: const EdgeInsets.all(10),
-                                child: const Text(
-                                  "okay",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
+                    showLengthDialog(context, theme);
                   },
                 ),
               ],

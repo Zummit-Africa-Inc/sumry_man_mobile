@@ -10,7 +10,7 @@ const host =
 
 class SummaryApi {
   Future<Map<String, dynamic>> summarize(
-      {required String text, int? sentenceCount}) async {
+      {required String text, required int sentenceCount}) async {
     Map<String, dynamic> summaryObject = {};
     bool validURL = false;
     if (text.length > 1000) {
@@ -24,9 +24,14 @@ class SummaryApi {
       "Access-Control-Allow-Origin": "*",
     };
 
-    Map<String, dynamic> textBody = {"text": text, "sentence_count": 10};
-    Map<String, dynamic> urlBody = {"url": text, "sentence_count": 10};
-
+    Map<String, dynamic> textBody = {
+      "text": text,
+      "sentence_count": sentenceCount
+    };
+    Map<String, dynamic> urlBody = {
+      "url": text,
+      "sentence_count": sentenceCount
+    };
     try {
       final response =
           await http.post(Uri.parse(validURL ? "$host/url" : "$host/text"),
@@ -74,7 +79,10 @@ class SummaryApi {
     return summaryObject;
   }
 
-  Future sendRequest(String filepath, String filename) async {
+  Future sendRequest(
+      {required String filepath,
+      required String filename,
+      required int sentenceCount}) async {
     Map<String, dynamic> summaryObject = {};
     var extension = filepath.split('.').last;
     print("file extension is: $extension");
@@ -83,7 +91,8 @@ class SummaryApi {
       return summaryObject;
     }
 
-    var request = http.MultipartRequest("POST", Uri.parse("$host/upload_file"));
+    var request = http.MultipartRequest(
+        "POST", Uri.parse("$host/upload_file?sentence_count=$sentenceCount"));
     var text = await http.MultipartFile.fromPath(
       "file_upload",
       filepath,
