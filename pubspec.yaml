@@ -31,7 +31,8 @@ dependencies:
   cached_network_image: ^3.2.0
   json_annotation: ^4.6.0
   retrofit: ^3.0.1+1
-  docx_template: ^0.3.3
+  pdf: ^3.8.3
+  #docx_template: ^0.3.3
 
   # Firebase Database
 

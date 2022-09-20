@@ -6,6 +6,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
 
 import '../../components/app_bar.dart';
 import '../../components/buttons.dart';
@@ -58,13 +60,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final path = await getDownloadPath();
     final date = (formatDate(
         DateTime.now(), [yyyy, '', mm, '', dd, '_', HH, '-', nn, '-', ss]));
-    String downloadName = "${date}_SumryMan.txt";
+    String downloadName = "${date}_SumryMan.pdf";
     return File('$path/$downloadName');
   }
 
   Future<File> writeDownload(String result) async {
     final file = await _localFile;
-    return file.writeAsString(result, mode: FileMode.append);
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (pw.Context context) {
+            return pw.Padding(
+              padding: const pw.EdgeInsets.all(10),
+              child: pw.Text(result),
+            );
+          }),
+    );
+
+    return file.writeAsBytes(await pdf.save());
   }
 
   _handleDownload() async {
