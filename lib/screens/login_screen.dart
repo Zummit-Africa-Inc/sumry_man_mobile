@@ -1,239 +1,243 @@
 import 'package:flutter/material.dart';
-import 'package:sumry_app/components/spacers.dart';
-import 'package:sumry_app/screens/sign_up_screen.dart';
-import 'package:sumry_app/utilis/designs/assets.dart';
-import 'package:sumry_app/utilis/designs/colors.dart';
-import 'package:sumry_app/utilis/designs/styles.dart';
-import 'package:sumry_app/utilis/res/res_profile.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+import '../components/app_bar.dart';
+import '../components/buttons.dart';
+import '../components/drawer.dart';
+import '../components/input_field.dart';
+import '../components/or.dart';
+import '../components/spacers.dart';
+import '../data/repository/user_repository.dart';
+import '../utils/designs/assets.dart';
+import '../utils/designs/colors.dart';
+import '../utils/designs/dimens.dart';
+import '../utils/designs/routes.dart';
+import '../utils/res/res_profile.dart';
+
+enum LoginScreenState { login, signup }
+
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  var state = LoginScreenState.login;
+  var isLoginLoading = false;
+  var isGoogleLoading = false;
+  var isFacebookLoading = false;
+  final form = GlobalKey<FormState>();
+
+  void _switch() {
+    setState(() {
+      if (state == LoginScreenState.login) {
+        state = LoginScreenState.signup;
+      } else {
+        state = LoginScreenState.login;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isLogin = state == LoginScreenState.login;
+
     return Scaffold(
-      backgroundColor: kWhite,
+      appBar: DefaultAppBar(
+        trailing: GestureDetector(
+          onTap: () => Navigator.pushNamed(context, Routes.home),
+          child: Text(
+            'Skip',
+            style: theme.textTheme.caption?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+      drawer: const AppDrawer(),
       body: SafeArea(
-        child: Center(
+        child: Form(
+          key: form,
           child: ListView(
-            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(
+              horizontal: sPadding,
+              vertical: sPadding * 2,
+            ),
             children: [
-              Center(
+              Align(
+                alignment: Alignment.topCenter,
                 child: Text(
-                  ResLogInScreen.welcome,
-                  style: sHeadingTextStyle,
-                ),
-              ),
-              vSpace(8),
-              Center(
-                child: Text(
-                  ResLogInScreen.loginToAccount,
-                  style: sHeading2TextStyle,
-                ),
-              ),
-              vSpace(22),
-              Center(
-                child: SizedBox(
-                  height: 47,
-                  width: 324,
-                  child: TextField(
-                    cursorColor: kPrimaryColor,
-                    decoration: InputDecoration(
-                      hintText: ResSignUpScreen.email,
-                      hintStyle: sHintTextStyle,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
+                  isLogin ? ResLoginScreen.header1 : ResLoginScreen.header2,
+                  style: theme.textTheme.headline5?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.primary,
                   ),
                 ),
               ),
-              vSpace(24),
-              Center(
-                child: SizedBox(
-                  height: 47,
-                  width: 324,
-                  child: TextField(
-                    cursorColor: kPrimaryColor,
-                    decoration: InputDecoration(
-                      suffix: Image.asset(
-                        Assets.eyeLogo,
-                      ),
-                      hintText: ResSignUpScreen.password,
-                      hintStyle: sHintTextStyle,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
+              vSpace(sSecondaryPadding / 2),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  isLogin
+                      ? ResLoginScreen.subHeader1
+                      : ResLoginScreen.subHeader2,
+                  style: theme.textTheme.bodyText1,
                 ),
               ),
-              vSpace(48),
-              Center(
-                child: SizedBox(
-                  height: 47,
-                  width: 324,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all(
-                        kPrimaryColor,
-                      ),
+              vSpace(sPadding * 2),
+              if (!isLogin) ...{
+                InputField(
+                  state: InputFieldState(
+                    label: ResLoginScreen.fullName,
+                    controller: nameController,
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+                vSpace(sPadding),
+              },
+              InputField(
+                state: InputFieldState(
+                  label: ResLoginScreen.email,
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                ),
+              ),
+              vSpace(sPadding),
+              PasswordField(
+                state: InputFieldState(
+                  controller: passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+              ),
+              if (!isLogin) ...{
+                vSpace(sPadding),
+                PasswordField(
+                  state: InputFieldState(
+                    label: ResLoginScreen.confirmPassword,
+                    keyboardType: TextInputType.visiblePassword,
+                  ),
+                ),
+              },
+              vSpace(sPadding * 2),
+              AppButton(
+                isLoading: isLoginLoading,
+                onPressed: onLoginClick,
+                backgroundColor: theme.colorScheme.primary,
+                text: isLogin ? ResLoginScreen.login : ResLoginScreen.signUp,
+              ),
+              vSpace(sSecondaryPadding / 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    isLogin
+                        ? ResLoginScreen.dontHaveAnAccount
+                        : ResLoginScreen.alreadyHaveAnAccount,
+                    style: theme.textTheme.caption?.copyWith(
+                      color: theme.colorScheme.primary,
                     ),
+                  ),
+                  hSpace(sSecondaryPadding / 4),
+                  InkWell(
+                    onTap: _switch,
                     child: Text(
-                      ResLogInScreen.login,
-                      style: sSignUpButtonTextStyle,
+                      isLogin ? ResLoginScreen.signUp : ResLoginScreen.login,
+                      style: theme.textTheme.caption?.copyWith(
+                        color: kSocialButtonColor,
+                      ),
                     ),
-                  ),
+                  )
+                ],
+              ),
+              vSpace(sPadding),
+              const Or(),
+              vSpace(sPadding),
+              AppButton(
+                isLoading: isGoogleLoading,
+                onPressed: onGoogleClick,
+                text: isLogin
+                    ? ResLoginScreen.continueWithGoogle
+                    : ResLoginScreen.signupWithGoogle,
+                backgroundColor: theme.colorScheme.primary,
+                icon: Image.asset(
+                  Assets.googleLogo,
                 ),
               ),
-              vSpace(9),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(ResLogInScreen.dontHaveAnAccount,
-                        style: sTextTextStyle),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        ResLogInScreen.signUp,
-                        style: sText2TextStyle,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              vSpace(14),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                        width: 145,
-                        child: Divider(
-                          color: kDividerColor,
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        ResSignUpScreen.oR,
-                        style: const TextStyle(color: kTextColor),
-                      ),
-                    ),
-                    const SizedBox(
-                        width: 145,
-                        child: Divider(
-                          color: kDividerColor,
-                        ))
-                  ],
-                ),
-              ),
-              vSpace(14),
-              Center(
-                child: SizedBox(
-                  height: 54,
-                  width: 327,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all(
-                        kPrimaryColor,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          Assets.googleLogo,
-                        ),
-                        hSpace(8),
-                        Text(ResSocial.continueWithGoogle,
-                            style: sSignUpButtonTextStyle),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              vSpace(16),
-              Center(
-                child: SizedBox(
-                  height: 47,
-                  width: 324,
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      side: MaterialStateProperty.all<BorderSide>(
-                        const BorderSide(
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          Assets.facebookLogo,
-                        ),
-                        hSpace(8),
-                        Text(
-                          ResSocial.continueWithFacebook,
-                          style: sFacebookButtonTextStyle,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // vSpace(sSecondaryPadding),
+              // AppButton(
+              //   isLoading: isFacebookLoading,
+              //   onPressed: onFacebookClick,
+              //   text: isLogin
+              //       ? ResLoginScreen.continueWithFacebook
+              //       : ResLoginScreen.signupWithFacebook,
+              //   textColor: theme.colorScheme.primary,
+              //   border: theme.colorScheme.primary,
+              //   backgroundColor: Colors.transparent,
+              //   icon: Image.asset(
+              //     Assets.facebookLogo,
+              //   ),
+              // ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void onLoginClick() async {
+    if (form.currentState?.validate() == true) {
+      setState(() => isLoginLoading = true);
+      final repository = ref.read(userRepository.notifier);
+      final name = nameController.text;
+      final email = emailController.text;
+      final password = passwordController.text;
+      final result = state == LoginScreenState.login
+          ? await repository.login(email, password)
+          : await repository.register(name, email, password);
+      setState(() => isLoginLoading = false);
+      handleResult(result);
+    }
+  }
+
+  void onGoogleClick() async {
+    setState(() => isGoogleLoading = true);
+    final repository = ref.read(userRepository.notifier);
+    final result = await repository.signInWithGoogle();
+    setState(() => isGoogleLoading = false);
+    handleResult(result);
+  }
+
+  void onFacebookClick() async {
+    setState(() => isFacebookLoading = true);
+    final repository = ref.read(userRepository.notifier);
+    final result = await repository.signInWithFacebook();
+    setState(() => isFacebookLoading = false);
+    handleResult(result);
+  }
+
+  void handleResult(String? result) {
+    if (result == null) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, Routes.home, ModalRoute.withName(Routes.splash));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(result)));
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

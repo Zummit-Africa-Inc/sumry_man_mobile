@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:sumry_app/components/spacers.dart';
-import 'package:sumry_app/utilis/designs/assets.dart';
-import 'package:sumry_app/utilis/designs/styles.dart';
-import 'package:sumry_app/utilis/res/res_profile.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SplashScreen extends StatefulWidget {
+import '../components/copyright.dart';
+import '../data/repository/user_repository.dart';
+import '../utils/designs/routes.dart';
+
+class SplashScreen extends ConsumerWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  final double space = 18;
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    Future.delayed(
+      const Duration(seconds: 2),
+      () {
+        final repo = ref.read(userRepository.notifier);
+        Navigator.pushReplacementNamed(
+          context,
+          repo.authenticated ? Routes.home : Routes.onboarding,
+        );
+      },
+    );
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-              image: AssetImage(Assets.sumryLogo),
-            ),
-            vSpace(space),
-            Text(
-              ResWelcomePage.sumry,
-              style: sPrimaryTextStyle,
-            ),
-          ],
-        ),
+      backgroundColor: theme.colorScheme.primary,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Spacer(),
+          Trademark(),
+          Spacer(),
+          Copyright(color: Colors.white),
+        ],
       ),
     );
   }
