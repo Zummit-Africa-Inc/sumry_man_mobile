@@ -7,7 +7,6 @@ import '../data/repository/user_repository.dart';
 import '../utils/designs/assets.dart';
 import '../utils/designs/dimens.dart';
 import '../utils/designs/routes.dart';
-import '../utils/res/res_profile.dart';
 
 class SplashScreen extends ConsumerWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -27,26 +26,14 @@ class SplashScreen extends ConsumerWidget {
     );
     return Scaffold(
       backgroundColor: theme.colorScheme.primary,
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Spacer(),
-            // const Image(
-            //   image: AssetImage(Assets.sumryLogo),
-            // ),
-            vSpace(sPadding),
-            Text(
-              ResWelcomePage.sumry,
-              style: theme.textTheme.headline4?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: theme.colorScheme.secondary,
-              ),
-            ),
-            const Spacer(),
-            const Copyright(color: Colors.white),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Spacer(),
+          Trademark(),
+          Spacer(),
+          Copyright(color: Colors.white),
+        ],
       ),
     );
   }
