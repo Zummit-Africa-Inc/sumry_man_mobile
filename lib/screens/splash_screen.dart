@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../components/copyright.dart';
-import '../components/spacers.dart';
 import '../data/repository/user_repository.dart';
-import '../utils/designs/assets.dart';
-import '../utils/designs/dimens.dart';
 import '../utils/designs/routes.dart';
 
 class SplashScreen extends ConsumerWidget {
