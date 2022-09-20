@@ -25,16 +25,15 @@ dependencies:
   dio: ^4.0.6
   firebase_core: ^1.21.1
   firebase_auth: ^3.7.0
-  firebase_database: ^7.2.1
   google_sign_in: ^5.4.1
   flutter_facebook_auth: ^4.4.1+1
   cached_network_image: ^3.2.0
   json_annotation: ^4.6.0
   retrofit: ^3.0.1+1
+  docx_template: ^0.3.3
+  boxy: ^2.0.6+2
+  firebase_database: ^9.1.4
   pdf: ^3.8.3
-  #docx_template: ^0.3.3
-
-  # Firebase Database
 
 dev_dependencies:
   flutter_test:

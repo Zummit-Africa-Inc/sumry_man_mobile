@@ -1,6 +1,5 @@
 class ResWelcomePage {
   ResWelcomePage._();
-  static const String sumry = "SumryMan";
   static const String zummit = "ZummitAfrica Inc.";
 }
 
