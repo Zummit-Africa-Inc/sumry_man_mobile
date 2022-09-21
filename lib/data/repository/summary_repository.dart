@@ -17,12 +17,7 @@ class SummaryRepository {
   const SummaryRepository(this.remote);
 
   Future<Result<String>> summarize(String text, int sentenceCount) async {
-    var validUrl = false;
-    if (text.length > 1000) {
-      validUrl = false;
-    } else {
-      validUrl = Uri.parse(text).isAbsolute;
-    }
+    final validUrl = Uri.tryParse(text)?.hasAbsolutePath ?? false;
     return (validUrl)
         ? _summarizeUrl(text, sentenceCount)
         : _summarizeText(text, sentenceCount);
