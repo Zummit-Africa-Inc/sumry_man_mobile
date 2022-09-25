@@ -1,6 +1,7 @@
 import 'package:boxy/boxy.dart';
 import 'package:boxy/flex.dart';
 import 'package:flutter/material.dart';
+import 'package:sumry_man/utils/designs/colors.dart';
 
 import '../utils/designs/assets.dart';
 import '../utils/designs/dimens.dart';
@@ -25,6 +26,31 @@ class Copyright extends StatelessWidget {
           '\u00a9${DateTime.now().year} ${ResWelcomePage.zummit}',
           style: theme.textTheme.bodyText2?.copyWith(
             color: color ?? theme.colorScheme.primary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class WebCopyright extends StatelessWidget {
+  final Color? color;
+
+  const WebCopyright({
+    Key? key,
+    this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(sPadding / 2),
+        child: Text(
+          '\u00a9${DateTime.now().year} ${ResWelcomePage.zummit}',
+          style: theme.textTheme.bodyText2?.copyWith(
+            color: kWhite,
           ),
         ),
       ),

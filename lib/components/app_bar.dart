@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sumry_man/components/buttons.dart';
+import 'package:sumry_man/utils/designs/colors.dart';
 
 import '../utils/designs/dimens.dart';
+import '../utils/designs/styles.dart';
+import '../utils/res/res_profile.dart';
 import 'spacers.dart';
 
 class DefaultAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -55,5 +59,40 @@ class DefaultAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
+  Size get preferredSize => const Size.fromHeight(56);
+}
+
+class WebAppBar extends StatelessWidget with PreferredSizeWidget{
+  const WebAppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: Padding(
+        padding: const EdgeInsets.only(left: sPadding),
+        child: Row(
+          children: [
+            Text(
+              ResHomeScreen.sumry,
+              style: sText3TextStyle,
+            ),
+            Text(
+              ResHomeScreen.man,
+              style: sText5TextStyle,
+            )
+          ],
+        ),
+      ),
+      leadingWidth: sPadding * 7,
+      actions: const [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, sPadding / 2, sPadding, sPadding / 2),
+          child: LoginRegisterButton(),
+        ),
+      ],
+    );
+  }
+
+    @override
   Size get preferredSize => const Size.fromHeight(56);
 }
