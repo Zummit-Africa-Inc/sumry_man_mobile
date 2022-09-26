@@ -35,7 +35,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   var isLoading = false;
   var fileName = '';
-  File? document;
+  PlatformFile? document;
   var selectedIndex = 0;
   var lines = 1;
 
@@ -444,16 +444,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   vertical: 8,
                                 ),
                               ),
-                              hSpace(sSecondaryPadding),
-                              AppButton(
-                                onPressed: _handleDownload,
-                                text: ResHomeScreen.download,
-                                backgroundColor: theme.colorScheme.primary,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
+                              if (!kIsWeb) ...{
+                                hSpace(sSecondaryPadding),
+                                AppButton(
+                                  onPressed: _handleDownload,
+                                  text: ResHomeScreen.download,
+                                  backgroundColor: theme.colorScheme.primary,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
                                 ),
-                              ),
+                              }
                             ],
                           ),
                         ),
@@ -573,15 +575,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
 
     if (result != null) {
-      final file = result.files.first;
-
       setState(() {
-        if (kIsWeb) {
-          document = File.fromRawPath(file.bytes!);
-        } else {
-          document = File(file.path!);
-        }
-        fileName = file.name;
+        document = result.files.first;
+        fileName = document?.name ?? '';
       });
     }
   }

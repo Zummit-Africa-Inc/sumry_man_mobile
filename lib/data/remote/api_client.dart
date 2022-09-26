@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:retrofit/http.dart';
@@ -52,6 +54,25 @@ abstract class ApiClient {
   @POST(ApiEndpoints.file)
   Future<SummaryResponse> summarizeFile(
     @Header("Content-Type") String contentType,
-    @Part(name: "file_upload", contentType: 'text/plain') File fileUpload,
+    @Part(name: "file_upload", contentType: 'text/plain')
+        PlatformFile fileUpload,
   );
+
+  static Future<MultipartFile> file(
+    PlatformFile file,
+    String contentType,
+  ) async {
+    if (kIsWeb) {
+      return MultipartFile.fromBytes(
+        file.bytes?.cast() ?? [],
+        contentType: MediaType.parse(contentType),
+        filename: file.name,
+      );
+    }
+    return MultipartFile.fromFileSync(
+      file.path ?? '',
+      filename: file.path?.split(Platform.pathSeparator).last,
+      contentType: MediaType.parse(contentType),
+    );
+  }
 }

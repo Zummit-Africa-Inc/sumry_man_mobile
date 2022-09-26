@@ -1,6 +1,6 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sumry_man/data/remote/dto/request.dart';
 
@@ -42,8 +42,9 @@ class SummaryRepository {
     }).onError((e, _) => Result.failure(_errorText(e)));
   }
 
-  Future<Result<String>> summarizeFile(File file, int sentenceCount) async {
-    final extension = file.path.split('.').last;
+  Future<Result<String>> summarizeFile(
+      PlatformFile file, int sentenceCount) async {
+    final extension = (kIsWeb ? file.name : file.path)?.split('.').last;
     final contentType = extension == 'txt'
         ? 'text/plain'
         : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';

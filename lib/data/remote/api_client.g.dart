@@ -81,11 +81,7 @@ class _ApiClient implements ApiClient {
     final _data = FormData();
     _data.files.add(MapEntry(
       'file_upload',
-      MultipartFile.fromFileSync(
-        fileUpload.path,
-        filename: fileUpload.path.split(Platform.pathSeparator).last,
-        contentType: MediaType.parse(contentType),
-      ),
+      await ApiClient.file(fileUpload, contentType),
     ));
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<SummaryResponse>(Options(

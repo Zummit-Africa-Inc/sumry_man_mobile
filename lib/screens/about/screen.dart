@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 
-import '../components/app_bar.dart';
-import '../components/buttons.dart';
-import '../components/copyright.dart';
-import '../components/drawer.dart';
-import '../components/spacers.dart';
-import '../utils/designs/dimens.dart';
-import '../utils/res/res_profile.dart';
+import '../../components/app_bar.dart';
+import '../../components/buttons.dart';
+import '../../components/copyright.dart';
+import '../../components/drawer.dart';
+import '../../components/spacers.dart';
+import '../../utils/designs/dimens.dart';
+import '../../utils/res/res_profile.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
