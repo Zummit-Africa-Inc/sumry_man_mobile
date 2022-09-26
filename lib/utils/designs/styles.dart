@@ -96,3 +96,21 @@ final sFacebookButtonTextStyle = GoogleFonts.poppins(
     color: kPrimaryColor,
   ),
 );
+
+final sText3TextStyle = GoogleFonts.poppins(
+  textStyle: const TextStyle(
+      fontWeight: FontWeight.w500, fontSize: 24, color: kWhite),
+);
+
+final sText4TextStyle = GoogleFonts.poppins(
+  textStyle: const TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: 16,
+      color: kWhite,
+      fontStyle: FontStyle.italic),
+);
+
+final sText5TextStyle = GoogleFonts.poppins(
+  textStyle: const TextStyle(
+      fontWeight: FontWeight.w500, fontSize: 24, color: kButtonColor),
+);

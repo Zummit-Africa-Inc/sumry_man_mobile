@@ -47,6 +47,11 @@ class ResHomeScreen {
   static const String result = "Results";
   static const String copy = "Copy";
   static const String download = "Download";
+  static const String sumry = "Sumry";
+  static const String man = "Man";
+  static const String withLove = "made with love by ";
+  static const String fastFree = "Fast and Free";
+  static const String getSummary = "Get Instant Summary";
 }
 
 class ResCommentScreen {

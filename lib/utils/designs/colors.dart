@@ -11,3 +11,5 @@ const Color kWhite = Color.fromRGBO(225, 225, 225, 1);
 const Color kBlack = Color.fromRGBO(0, 0, 0, 1);
 const Color kTextColorLink = Color.fromRGBO(189, 142, 0, 1);
 const Color kDividerColor = Color.fromRGBO(177, 177, 177, 1);
+const Color kHomeBGColor = Color.fromRGBO(255, 254, 245, 1);
+

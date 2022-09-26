@@ -6,6 +6,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sumry_man/components/copyright.dart';
+import 'package:sumry_man/utils/designs/colors.dart';
+import 'package:sumry_man/utils/designs/styles.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -109,6 +112,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final theme = Theme.of(context);
     final viewModel = ref.read(homeViewModel);
 
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      if (constraints.maxWidth > 900) {
+        return webLayout(theme, viewModel, context);
+      } else {
+        return mobileLayout(theme, viewModel, context);
+      }
+    });
+  }
+
+  Scaffold mobileLayout(
+      ThemeData theme, HomeViewModel viewModel, BuildContext context) {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: const DefaultAppBar(
@@ -264,6 +279,279 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
             vSpace(sPadding),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Scaffold webLayout(
+      ThemeData theme, HomeViewModel viewModel, BuildContext context) {
+    return Scaffold(
+      appBar: const WebAppBar(),
+      body: SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            const SizedBox(
+              height: sPadding * 2,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: sPadding * 2),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: SizedBox(
+                            width: sPadding * 16,
+                            child: Text(
+                              ResHomeScreen.header,
+                              style: theme.textTheme.headline5?.copyWith(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600,
+                                color: theme.colorScheme.primary,
+                              ),
+                            ),
+                          ),
+                        ),
+                        vSpace(sSecondaryPadding),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            ResHomeScreen.fastFree,
+                            style: theme.textTheme.overline?.copyWith(
+                              fontSize: 15,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        Image.asset(
+                          "assets/images/welcome_2.png",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: sSecondaryPadding),
+                          child: InputField(
+                            state: InputFieldState(
+                              onClick: () => setState(() => selectedIndex = 1),
+                              controller: textController,
+                              textAlign: TextAlign.center,
+                              label: ResHomeScreen.enterText,
+                            ),
+                          ),
+                        ),
+                        InputField(
+                          state: InputFieldState(
+                            textAlign: TextAlign.center,
+                            onClick: _selectFile,
+                            label: document == null
+                                ? ResHomeScreen.uploadText
+                                : fileName,
+                            icon: const Icon(
+                              Icons.upload,
+                            ),
+                            readOnly: true,
+                          ),
+                        ),
+                        vSpace(sSecondaryPadding),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if (selectedIndex != 2) ...{
+                              SizedBox(
+                                width: 80,
+                                child: DropdownTextField<int>(
+                                  value: lines,
+                                  items:
+                                      List.generate(10, (index) => index + 1),
+                                  label: ResHomeScreen.lineCount,
+                                  onItemChanged: (value) {
+                                    lines = value ?? lines;
+                                  },
+                                ),
+                              )
+                            },
+                            AppButton(
+                              isLoading: isLoading,
+                              text: ResHomeScreen.summarize,
+                              backgroundColor: theme.colorScheme.primary,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              onPressed: _summarize,
+                            ),
+                          ],
+                        ),
+                        vSpace(sSecondaryPadding),
+                        InputField(
+                          state: InputFieldState(
+                            label: ResHomeScreen.result,
+                            controller: resultController,
+                            readOnly: true,
+                            maxLines: 5,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: sSecondaryPadding),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: AppButton(
+                              onPressed: () {
+                                viewModel.copyToClipboard(
+                                    resultController.text, context);
+                              },
+                              text: ResHomeScreen.copy,
+                              icon: const Icon(
+                                Icons.copy,
+                                color: Colors.white,
+                              ),
+                              backgroundColor: theme.colorScheme.primary,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AppButton(
+                                text: ResCommentScreen.leaveUsAComment,
+                                onPressed: () => Navigator.pushNamed(
+                                  context,
+                                  Routes.comment,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                border: theme.colorScheme.primary,
+                                textColor: theme.colorScheme.primary,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                              ),
+                              hSpace(sSecondaryPadding),
+                              AppButton(
+                                onPressed: _handleDownload,
+                                text: ResHomeScreen.download,
+                                backgroundColor: theme.colorScheme.primary,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        vSpace(sPadding),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: sPadding * 2,
+            ),
+            Container(
+              color: kHomeBGColor,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: sPadding * 2, vertical: sPadding * 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      "assets/images/home_img.png",
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          ResHomeScreen.getSummary,
+                          style: theme.textTheme.headline5?.copyWith(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                        vSpace(sSecondaryPadding),
+                        SizedBox(
+                          width: 350,
+                          child: Text(
+                            ResHomeScreen.subHeader,
+                            style: theme.textTheme.overline?.copyWith(
+                              fontSize: 15,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              color: kPrimaryColor,
+              height: sPadding * 4,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            ResHomeScreen.sumry,
+                            style: sText3TextStyle,
+                          ),
+                          Text(
+                            ResHomeScreen.man,
+                            style: sText5TextStyle,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        width: sPadding / 2,
+                      ),
+                      Text(
+                        ResHomeScreen.withLove,
+                        style: sText4TextStyle,
+                      ),
+                      const SizedBox(
+                        width: sPadding / 2,
+                      ),
+                      Image.asset(
+                        "assets/images/logomark_white.png",
+                      ),
+                      const SizedBox(
+                        width: sPadding / 2,
+                      ),
+                      Image.asset(
+                        "assets/images/zummit_africa.png",
+                      ),
+                    ],
+                  ),
+                  const WebCopyright()
+                ],
+              ),
+            ),
           ],
         ),
       ),
