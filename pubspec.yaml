@@ -32,6 +32,8 @@ dependencies:
   retrofit: ^3.0.1+1
   boxy: ^2.0.6+2
   firebase_database: ^9.1.4
+  pdf: ^3.8.3
+  permission_handler: ^10.0.1
 
 dev_dependencies:
   flutter_test:

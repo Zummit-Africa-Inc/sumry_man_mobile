@@ -9,6 +9,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sumry_man/components/copyright.dart';
 import 'package:sumry_man/utils/designs/colors.dart';
 import 'package:sumry_man/utils/designs/styles.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../components/app_bar.dart';
 import '../../components/buttons.dart';
@@ -61,13 +64,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final path = await getDownloadPath();
     final date = (formatDate(
         DateTime.now(), [yyyy, '', mm, '', dd, '_', HH, '-', nn, '-', ss]));
-    String downloadName = "${date}_SumryMan.txt";
+    String downloadName = "${date}_SumryMan.pdf";
     return File('$path/$downloadName');
   }
 
-  Future<File> writeDownload(String result) async {
+  Future<File?> writeDownload(String result) async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      status = await Permission.storage.request();
+      if (!status.isGranted) return null;
+    }
     final file = await _localFile;
-    return file.writeAsString(result, mode: FileMode.append);
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (pw.Context context) {
+            return pw.Padding(
+              padding: const pw.EdgeInsets.all(10),
+              child: pw.Text(result),
+            );
+          }),
+    );
+
+    return file.writeAsBytes(await pdf.save());
   }
 
   _handleDownload() async {
@@ -75,7 +96,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       context.showSnackMessage('Nothing to download');
     } else {
       writeDownload(resultController.text).then(
-        (file) => context.showSnackMessage('File downloaded to ${file.path}'),
+        (file) {
+          if (file != null) {
+            context.showSnackMessage('File downloaded to ${file.path}');
+          } else {
+            context.showSnackMessage('Failed to save file');
+          }
+        },
       );
     }
   }
