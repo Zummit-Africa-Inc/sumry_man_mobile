@@ -291,6 +291,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: const WebAppBar(),
       body: SafeArea(
         child: ListView(
+          controller: PrimaryScrollController.of(context),
           shrinkWrap: true,
           children: [
             const SizedBox(
