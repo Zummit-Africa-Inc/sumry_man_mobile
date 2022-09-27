@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sumry_man/components/copyright.dart';
-import 'package:sumry_man/utils/designs/colors.dart';
-import 'package:sumry_man/utils/designs/styles.dart';
 
 import '../../components/app_bar.dart';
 import '../../components/buttons.dart';
@@ -11,7 +9,7 @@ import '../../utils/designs/assets.dart';
 import '../../utils/designs/dimens.dart';
 import '../../utils/res/res_profile.dart';
 import '../about_screen.dart';
-import 'fields.dart';
+import 'form.dart';
 
 class HomeScreen extends StatelessWidget {
   final bool isLargeScreen;
@@ -77,7 +75,7 @@ class HomeScreen extends StatelessWidget {
       children: [
         Expanded(child: text),
         hSpace(padding),
-        const Expanded(child: HomeFields()),
+        const Expanded(child: HomeForm()),
       ],
     );
 
@@ -90,7 +88,9 @@ class HomeScreen extends StatelessWidget {
                 child: const TrademarkText(),
               )
             : null,
-        trailing: const LoginRegisterButton(),
+        trailing: LoginRegisterButton(
+          isLargeScreen: isLargeScreen,
+        ),
         padding: padding,
         color: isLargeScreen ? theme.colorScheme.primary : null,
       ),
@@ -111,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                   )
                 : Padding(
                     padding: EdgeInsets.symmetric(horizontal: padding),
-                    child: const HomeFields(),
+                    child: const HomeForm(),
                   ),
             isLargeScreen
                 ? Container(

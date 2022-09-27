@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../../screens/about_screen.dart';
 import '../../screens/comment_screen.dart';
 import '../../screens/home/screen.dart';
-import '../../screens/login_screen.dart';
+import '../../screens/login/screen.dart';
 import '../../screens/onboarding_screen.dart';
 import '../../screens/splash_screen.dart';
 import 'dimens.dart';

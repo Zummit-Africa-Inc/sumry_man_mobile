@@ -10,14 +10,14 @@ import '../../utils/designs/routes.dart';
 import '../../utils/res/res_profile.dart';
 import 'state.dart';
 
-class HomeFields extends ConsumerStatefulWidget {
-  const HomeFields({super.key});
+class HomeForm extends ConsumerStatefulWidget {
+  const HomeForm({super.key});
 
   @override
-  ConsumerState<HomeFields> createState() => _HomeFieldsState();
+  ConsumerState<HomeForm> createState() => _HomeFieldsState();
 }
 
-class _HomeFieldsState extends ConsumerState<HomeFields> {
+class _HomeFieldsState extends ConsumerState<HomeForm> {
   final textController = TextEditingController();
   final resultController = TextEditingController();
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/repository/user_repository.dart';
+import '../screens/login/form.dart';
+import '../screens/login/screen.dart';
 import '../utils/designs/dimens.dart';
 import '../utils/designs/routes.dart';
 import '../utils/res/res_profile.dart';
@@ -64,7 +66,8 @@ class AppButton extends StatelessWidget {
 }
 
 class LoginRegisterButton extends ConsumerWidget {
-  const LoginRegisterButton({super.key});
+  final bool isLargeScreen;
+  const LoginRegisterButton({super.key, this.isLargeScreen = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -74,7 +77,14 @@ class LoginRegisterButton extends ConsumerWidget {
         : AppButton(
             text: ResHomeScreen.loginRegister,
             onPressed: () {
-              Navigator.pushNamed(context, Routes.login);
+              if (isLargeScreen) {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => const LoginForm(),
+                );
+              } else {
+                Navigator.pushNamed(context, Routes.login);
+              }
             },
             textColor: Theme.of(context).colorScheme.primary,
           );

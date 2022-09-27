@@ -92,6 +92,7 @@ class InputField extends StatelessWidget {
       textInputAction: state.textInputAction,
       keyboardType: state.keyboardType,
       obscureText: state.obscureText,
+      validator: state.validator,
       decoration: InputDecoration(
         hintText: state.label,
         hintStyle: sHintTextStyle,
