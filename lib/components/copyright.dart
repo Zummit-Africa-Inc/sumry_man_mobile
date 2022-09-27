@@ -1,7 +1,5 @@
 import 'package:boxy/boxy.dart';
-import 'package:boxy/flex.dart';
 import 'package:flutter/material.dart';
-import 'package:sumry_man/utils/designs/colors.dart';
 
 import '../utils/designs/assets.dart';
 import '../utils/designs/dimens.dart';
@@ -10,22 +8,29 @@ import 'spacers.dart';
 
 class Copyright extends StatelessWidget {
   final Color? color;
+  final bool isLargeScreen;
+  final bool italics;
 
   const Copyright({
     Key? key,
     this.color,
+    this.isLargeScreen = false,
+    this.italics = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(sPadding / 2),
         child: Text(
-          '\u00a9${DateTime.now().year} ${ResWelcomePage.zummit}',
-          style: theme.textTheme.bodyText2?.copyWith(
+          '\u00a9${DateTime.now().year} ${isLargeScreen ? ResWelcomePage.zummitLarge : ResWelcomePage.zummit}',
+          style: (isLargeScreen ? textTheme.headline6 : textTheme.bodyText2)
+              ?.copyWith(
             color: color ?? theme.colorScheme.primary,
+            fontStyle: italics ? FontStyle.italic : null,
           ),
         ),
       ),
@@ -33,26 +38,26 @@ class Copyright extends StatelessWidget {
   }
 }
 
-class WebCopyright extends StatelessWidget {
-  final Color? color;
-
-  const WebCopyright({
-    Key? key,
-    this.color,
-  }) : super(key: key);
+class TrademarkText extends StatelessWidget {
+  const TrademarkText({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(sPadding / 2),
-        child: Text(
-          '\u00a9${DateTime.now().year} ${ResWelcomePage.zummit}',
-          style: theme.textTheme.bodyText2?.copyWith(
-            color: kWhite,
-          ),
+
+    return RichText(
+      text: TextSpan(
+        style: theme.textTheme.headline4?.copyWith(
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
         ),
+        children: <TextSpan>[
+          const TextSpan(text: 'Sumry'),
+          TextSpan(
+            text: 'Man',
+            style: TextStyle(color: theme.colorScheme.secondary),
+          ),
+        ],
       ),
     );
   }
@@ -68,23 +73,9 @@ class Trademark extends StatelessWidget {
     return CustomBoxy(
       delegate: _TrademarkDelegate(),
       children: [
-        BoxyId(
+        const BoxyId(
           id: #name,
-          child: RichText(
-            text: TextSpan(
-              style: theme.textTheme.headline4?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-              children: <TextSpan>[
-                const TextSpan(text: 'Sumry'),
-                TextSpan(
-                  text: 'Man',
-                  style: TextStyle(color: theme.colorScheme.secondary),
-                ),
-              ],
-            ),
-          ),
+          child: TrademarkText(),
         ),
         BoxyId(
           id: #logo,
@@ -121,7 +112,7 @@ class _TrademarkDelegate extends BoxyDelegate {
 
     return Size(
       nameSize.width,
-      nameSize.height,
+      nameSize.height + logoSize.height,
     );
   }
 }

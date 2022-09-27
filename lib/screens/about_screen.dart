@@ -23,10 +23,38 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: isLargeScreen
+          ? null
+          : DefaultAppBar(
+              trailing: LoginRegisterButton(),
+            ),
+      drawer: isLargeScreen ? null : const AppDrawer(),
+      body: SafeArea(
+        child: AboutContent(
+          isLargeScreen: isLargeScreen,
+          padding: padding,
+        ),
+      ),
+    );
+  }
+}
+
+class AboutContent extends StatelessWidget {
+  final bool isLargeScreen;
+  final double padding;
+  const AboutContent({
+    super.key,
+    required this.isLargeScreen,
+    required this.padding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-
     final text = Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -52,16 +80,15 @@ class AboutScreen extends StatelessWidget {
 
     final content = isLargeScreen
         ? Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
+              Flexible(
                 child: Center(
                   child: Image.asset(Assets.aboutLarge),
                 ),
               ),
               hSpace(padding * 2),
-              Expanded(
+              Flexible(
                 child: text,
               ),
             ],
@@ -82,25 +109,14 @@ class AboutScreen extends StatelessWidget {
             ],
           );
 
-    return Scaffold(
-      appBar: isLargeScreen
-          ? null
-          : DefaultAppBar(
-              trailing: LoginRegisterButton(),
-            ),
-      drawer: isLargeScreen ? null : const AppDrawer(),
-      body: SafeArea(
-        child: Container(
-          color: isLargeScreen ? Color(0xFFFFFEF5) : Colors.transparent,
-          padding: EdgeInsets.fromLTRB(
-            padding,
-            padding,
-            padding,
-            isLargeScreen ? padding : 0,
-          ),
-          child: content,
+    return Container(
+        color: isLargeScreen ? Color(0xFFFFFEF5) : Colors.transparent,
+        padding: EdgeInsets.fromLTRB(
+          padding,
+          padding,
+          padding,
+          isLargeScreen ? padding : 0,
         ),
-      ),
-    );
+        child: content);
   }
 }

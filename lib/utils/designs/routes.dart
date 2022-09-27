@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../screens/about_screen.dart';
 import '../../screens/comment_screen.dart';
-import '../../screens/home/home_screen.dart';
+import '../../screens/home/screen.dart';
 import '../../screens/login_screen.dart';
 import '../../screens/onboarding_screen.dart';
 import '../../screens/splash_screen.dart';
@@ -19,12 +19,12 @@ class Routes {
   static const String splash = "/splash";
 
   static bool isLargeScreen(BuildContext context) {
-    return MediaQuery.of(context).size.width > 760;
+    return MediaQuery.of(context).size.width > 900;
   }
 
   static Map<String, Widget Function(BuildContext)> routes = {
     onboarding: (context) => const OnboardingScreen(),
-    home: (context) => const HomeScreen(),
+    home: (ctx) => HomeScreen(isLargeScreen(ctx)),
     about: (ctx) => AboutScreen(
           isLargeScreen: isLargeScreen(ctx),
           padding: sPadding,

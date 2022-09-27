@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sumry_man/components/buttons.dart';
-import 'package:sumry_man/utils/designs/colors.dart';
 
 import '../utils/designs/dimens.dart';
 import '../utils/designs/styles.dart';
@@ -9,15 +8,17 @@ import '../utils/res/res_profile.dart';
 import 'spacers.dart';
 
 class DefaultAppBar extends StatelessWidget with PreferredSizeWidget {
-  final String? title;
-  final Widget? leading;
+  final Widget? title;
   final Widget? trailing;
+  final double padding;
+  final Color? color;
 
   const DefaultAppBar({
     Key? key,
     this.title,
-    this.leading,
     this.trailing,
+    this.padding = sPadding,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -31,29 +32,21 @@ class DefaultAppBar extends StatelessWidget with PreferredSizeWidget {
         statusBarIconBrightness: Brightness.light, // For Android (dark icons)
         statusBarBrightness: Brightness.light, // For iOS (dark icons)
       ),
-      leading: leading,
-      centerTitle: true,
-      title: title != null
-          ? Text(
-              title!,
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-            )
-          : null,
+      automaticallyImplyLeading: title == null,
+      titleSpacing: 0,
+      title: title,
       actions: trailing != null
           ? [
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   trailing!,
-                  hSpace(sPadding),
+                  hSpace(padding),
                 ],
               )
             ]
           : null,
-      backgroundColor: Colors.transparent,
+      backgroundColor: color ?? Colors.transparent,
       elevation: 0,
     );
   }
@@ -62,7 +55,7 @@ class DefaultAppBar extends StatelessWidget with PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(56);
 }
 
-class WebAppBar extends StatelessWidget with PreferredSizeWidget{
+class WebAppBar extends StatelessWidget with PreferredSizeWidget {
   const WebAppBar({Key? key}) : super(key: key);
 
   @override
@@ -93,6 +86,6 @@ class WebAppBar extends StatelessWidget with PreferredSizeWidget{
     );
   }
 
-    @override
+  @override
   Size get preferredSize => const Size.fromHeight(56);
 }
