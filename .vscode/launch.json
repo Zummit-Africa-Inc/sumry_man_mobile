@@ -5,12 +5,30 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "lldb",
+            "name": "sumry-man",
             "request": "launch",
-            "name": "Debug",
-            "program": "${workspaceFolder}/<executable file>",
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "type": "dart",
+            "args": [
+                "-v"
+            ]
+        },
+        {
+            "name": "sumry-man (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "-v"
+            ]
+        },
+        {
+            "name": "sumry-man (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "-v"
+            ]
         },
         {
             "name": "Flutter Web",
@@ -22,7 +40,8 @@
                 "--web-hostname",
                 "localhost",
                 "--web-port",
-                "8321"
+                "8321",
+                "-v"
             ],
         },
     ]

@@ -67,7 +67,8 @@ class ResCommentScreen {
 class ResAboutScreen {
   ResAboutScreen._();
 
-  static const String title = "About\nSumryman";
+  static const String titleSmall = "About\nSumryman";
+  static const String titleBig = "Get Instant Summary";
   static const String body =
       "SumryMan is a text summarization app with support for input from different sources(eg. url(website), text input, file upload(support msdocs, text files(.text) and docx files).";
 }
